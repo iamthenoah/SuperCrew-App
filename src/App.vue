@@ -1,6 +1,8 @@
 <template>
 	<WindowHeader />
-	<router-view/>
+	<main>
+		<router-view/>
+	</main>
 </template>
 
 <script lang="ts">

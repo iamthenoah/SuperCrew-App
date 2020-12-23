@@ -37,14 +37,14 @@
         position: absolute;
         background: $darker;
         width: 100%;
-        height: 22px;
+        height: 25px;
         user-select: none;
         -webkit-app-region: drag;
     }
 
     .app-name {
-        margin: 3px 7.5px;
-        color: rgba(white, 0.5);
+        margin: 4px 7.5px;
+        color: $lighter;
         font-size: 13px;
         text-transform: uppercase;
         font-family: 'Roboto';
@@ -56,15 +56,16 @@
         top: 0;
         right: 0;
         -webkit-app-region: no-drag;
+        cursor: pointer;
     }
 
     .titlebar-minimize,
     .titlebar-close {
-        width: 22px;
-        height: 22px;
+        width: 25px;
+        height: 25px;
         float: left;
         text-align: center;
-        line-height: 23px;
+        line-height: 26.5px;
         transition: background-color .1s;
     }
 
@@ -92,7 +93,7 @@
 
     svg polygon,
     svg rect {
-        fill: rgba(white, 0.5);
+        fill: $lighter;
     }
 
 </style>
