@@ -23,8 +23,8 @@ async function createWindow() {
 		},
 	});
 
-	ipcMain.handle('minimize-window', () => { win.minimize(); });
-	ipcMain.handle('close-and-quit', () => { win.close(); });
+	ipcMain.on('minimize-window', () => { win.minimize(); });
+	ipcMain.on('close-and-quit', () => { win.close(); });
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
