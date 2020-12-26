@@ -39,15 +39,16 @@
     width: auto;
     height: 33px;
     padding: 5px 20px;
-    border-radius: 3px;
+    border-radius: 2px;
     background: none;
     text-align: center;
     line-height: 21px;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    font-family: 'Open Sans';
+    font-family: 'Roboto';
     font-weight: bolder;
+    transition: all ease-in 75ms;
 }
 
 .btn-inverted {
@@ -75,7 +76,6 @@
 .btn-danger:hover,
 .btn-inverted:hover,
 .simple-link:hover {
-    transition: ease-in 150ms;
     opacity: 0.75;
 }
 

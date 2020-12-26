@@ -15,16 +15,17 @@
 <script lang="ts">
 
     import { defineComponent } from 'vue';
+    const { ipcRenderer } = window.require('electron');
 
     export default defineComponent({
         methods: {
             minimize: function() {
-                console.log('MIN');
+                ipcRenderer.send('minimize-window');
             },
             close: function() {
-                console.log('QIT');
+                ipcRenderer.send('close-and-quit');
             }
-        },
+        }
     });
 
 </script>
@@ -43,7 +44,11 @@
     }
 
     .app-name {
-        margin: 4px 7.5px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 7.5px;
+        width: auto;
         color: $lighter;
         font-size: 13px;
         text-transform: uppercase;
@@ -51,12 +56,13 @@
     }
 
     .titlebar-controls {
-        z-index: 1000;
         position: absolute;
+        height: 100%;
         top: 0;
         right: 0;
-        -webkit-app-region: no-drag;
+        z-index: 1000;
         cursor: pointer;
+        -webkit-app-region: no-drag;
     }
 
     .titlebar-minimize,
@@ -65,7 +71,7 @@
         height: 25px;
         float: left;
         text-align: center;
-        line-height: 26.5px;
+        line-height: 27px;
         transition: background-color .1s;
     }
 
@@ -79,7 +85,7 @@
         transition: fill .1s;
     }
 
-    .titlebar-close:hover svg polygon {
+    .titlebar-close:hover > svg polygon {
         fill: white;
     }
 

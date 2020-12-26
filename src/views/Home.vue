@@ -1,3 +1,3 @@
 <template>
-	<h1 style="color:red">HOME</h1>
+	<button class="btn">Open Game</button>
 </template>

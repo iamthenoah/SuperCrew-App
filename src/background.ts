@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
@@ -13,17 +13,18 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
 	const win = new BrowserWindow({
-		width: 250,
-		height: 400,
+		width: 250, //250,350
+		height: 350,
 		frame: false,
 		resizable: false,
 		webPreferences: {
 			devTools: false,
-			nodeIntegration: (((process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean as unknown) as boolean as unknown) as boolean
+			nodeIntegration: true
 		},
 	});
 
-	win.removeMenu();
+	ipcMain.handle('minimize-window', () => { win.minimize(); });
+	ipcMain.handle('close-and-quit', () => { win.close(); });
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -32,7 +33,7 @@ async function createWindow() {
 		createProtocol('app');
 		win.loadURL('app://./index.html');
 	}
-}
+};
 
 
 // Quit when all windows are closed.
@@ -81,4 +82,4 @@ if (isDevelopment) {
 			app.quit();
 		});
 	}
-}
+};
