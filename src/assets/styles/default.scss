@@ -10,10 +10,11 @@
 
 body {
     color: white;
-    background: $dark;
+    background: $light;
     font-size: 14px;
     overflow-x: hidden;
     overflow-y: hidden;
+    height: 100%;
 }
 
 a,
@@ -49,8 +50,9 @@ a, button {
 }
 
 p {
-    line-height: 25px;
+    line-height: 20px;
     display:inline-block;
+    word-wrap: break-word;
 }
 
 ul, li {
@@ -62,9 +64,8 @@ li {
     display: inline;
 }
 
-
 hr {
-    margin: 20px 0;
+    margin: 15px 0;
     border: none;
     height: 1px;
     background: rgba(255, 255, 255, 0.05); 
@@ -72,12 +73,11 @@ hr {
 
 section {
     position: relative;
-    margin: 0px 20px;
+    padding: 5px 10px;
 }
 
 main {
-    height: 100%;
-    padding-top: 50px;
+    padding-top: 25px;
 }
 
 header {

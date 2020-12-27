@@ -39,7 +39,7 @@
         created() {
             if (this.$props.duration > 0) {
                 setTimeout(() => {
-                    this.show = false;
+                    this.closeNotification();
                 }, this.$props.duration);            
             }
         },

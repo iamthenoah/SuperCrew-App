@@ -1,9 +1,12 @@
 <template>
-	<LoadingBar />
-	<section>
-		<button v-if="!gameOpened" @click="openAmongUs" class="btn center-h">Open Among Us</button>
-	</section>
-	<Notification message="Game does not seem to be opened..." messageType="warning" />
+	<div>
+		<LoadingBar />
+		<section>
+			<hr>
+			<button v-if="!gameOpened" @click="openAmongUs" class="btn">Open Among Us</button>
+		</section>
+		<Notification message="Game does not seem to be opened wfwefwefwe f wef we f w f wef  f w f we f ..." messageType="success" />
+	</div>
 </template>
 
 <script lang="ts">

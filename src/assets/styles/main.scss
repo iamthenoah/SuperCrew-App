@@ -1,10 +1,3 @@
-.content {
-    position: absolute;
-    width: 1000px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 .surround {
     position: absolute;
     width: 100%;
@@ -237,4 +230,19 @@
 
 .item-select:hover {
     border: solid white 1.5px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: rgba($darker, 0.5);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: $darker; 
 }
