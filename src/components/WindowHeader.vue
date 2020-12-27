@@ -20,10 +20,10 @@
     export default defineComponent({
         methods: {
             minimize: function() {
-                ipcRenderer.send('minimize-window');
+                ipcRenderer.invoke('minimize-window');
             },
             close: function() {
-                ipcRenderer.send('close-and-quit');
+                ipcRenderer.invoke('close-window');
             }
         }
     });
@@ -33,15 +33,6 @@
 <style lang="scss" scoped>
     
 	@import './src/assets/styles/variables.scss';
-
-    header {
-        position: absolute;
-        background: $darker;
-        width: 100%;
-        height: 25px;
-        user-select: none;
-        -webkit-app-region: drag;
-    }
 
     .app-name {
         position: absolute;

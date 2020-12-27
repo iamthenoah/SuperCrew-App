@@ -15,16 +15,23 @@ async function createWindow() {
 	const win = new BrowserWindow({
 		width: 250, //250,350
 		height: 350,
-		frame: false,
 		resizable: false,
+		frame: false,
 		webPreferences: {
 			devTools: false,
 			nodeIntegration: true
 		},
 	});
 
-	ipcMain.on('minimize-window', () => { win.minimize(); });
-	ipcMain.on('close-and-quit', () => { win.close(); });
+	ipcMain.handle('minimize-window', () => { win.minimize(); });
+	ipcMain.handle('close-window', () => { win.close(); });
+	ipcMain.handle('open-game', async () : Promise<boolean> => {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				return resolve(true);
+			}, 1000);
+		});
+	});
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);

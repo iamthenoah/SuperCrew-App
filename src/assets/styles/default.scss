@@ -62,17 +62,29 @@ li {
     display: inline;
 }
 
-main {
-    position: absolute;
-    top: 25px;
-    height: 100%;
-    width: 100%;
-    margin: 10px;
-}
 
 hr {
     margin: 20px 0;
     border: none;
     height: 1px;
     background: rgba(255, 255, 255, 0.05); 
+}
+
+section {
+    position: relative;
+    margin: 0px 20px;
+}
+
+main {
+    height: 100%;
+    padding-top: 50px;
+}
+
+header {
+    position: absolute;
+    background: $darker;
+    width: 100%;
+    height: 25px;
+    user-select: none;
+    -webkit-app-region: drag;
 }
