@@ -20,6 +20,7 @@
     "memoryjs": "^3.4.0",
     "node-sass": "^5.0.0",
     "path": "^0.12.7",
+    "registry-js": "^1.13.0",
     "structron": "^0.3.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",

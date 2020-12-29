@@ -1,8 +1,9 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, shell } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import './events';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -15,8 +16,9 @@ async function createWindow() {
 	const win = new BrowserWindow({
 		width: 250, //250,350
 		height: 350,
-		resizable: false,
 		frame: false,
+		resizable: false,
+		fullscreenable: false,
 		webPreferences: {
 			devTools: false,
 			nodeIntegration: true
@@ -25,13 +27,6 @@ async function createWindow() {
 
 	ipcMain.handle('minimize-window', () => { win.minimize(); });
 	ipcMain.handle('close-window', () => { win.close(); });
-	ipcMain.handle('open-game', async () : Promise<boolean> => {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				return resolve(true);
-			}, 1000);
-		});
-	});
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -72,7 +67,7 @@ app.on('ready', async () => {
 			console.error('Vue Devtools failed to install:', e.toString());
 		}
 	}
-	createWindow()
+	createWindow();
 });
 
 

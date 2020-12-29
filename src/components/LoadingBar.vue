@@ -1,39 +1,27 @@
 <template>
-    <span id="loading-bar"></span>
+    <div id="loading-bar"></div>
 </template>
 
 <style lang="scss" scoped>
     
 	@import './src/assets/styles/variables.scss';
 
-    #loading-bar {
-        position: relative;
+	#loading-bar {
+		position: absolute;
+		z-index: 1000;
         width: 100%;
-        height: 100px;
-        animation: load 500ms ease-in-out forwards;
+        height: 4px;
+		animation: load 1000ms ease-in-out alternate-reverse infinite;
         background: $theme;
     }
 
     @keyframes load {
-        0% {
-            left: 0;
-            width: 0;
-        }
-        25% {
-            width: 25%;
-            left: 0%;
-        }
-        50% {
-            width: 50%;
-            left: 25%;
-        }
-        75% {
-            width: 25%;
-            left: 50%;
-        }
-        100% {
-            width: 0%;
-            left: 75%;
-        }
+		0% {
+			left: -100%;
+		}
+		100% {
+			left: 100%;
+		}
     }
+    
 </style>
