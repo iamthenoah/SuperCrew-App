@@ -4,7 +4,8 @@
 		<section :class="{ 'disabled' : submitted }">
 			<div id="loading-bar"></div>
 			<hr>
-			<button v-if="!gameOpened" @click="openAmongUs" class="btn center-h">Open Among Us</button>
+			<p  v-if="!error" class="error">{{ error }}</p>
+			<button v-if="!isGameOpened" @click="openAmongUs" class="btn center-h">Open Among Us</button>
 		</section>
 	</div>
 </template>
@@ -22,14 +23,17 @@
 		data() {
 			return {
 				submitted: false,
-				gameOpened: false,
+				isGameOpened: false,
+				error: "",
 			}
 		},
         methods: {
 			openAmongUs: function() {
 				this.submitted = true;
-				ipcRenderer.invoke('open-game').then((opened) => { this.gameOpened = opened });
-				setTimeout(() => { this.submitted = false; }, 3000);
+				ipcRenderer.invoke('open-game')
+					.then((opened) => this.isGameOpened = opened)
+					.catch(err => this.error = err);
+				this.submitted = false;
 			}
 		},
     });

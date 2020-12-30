@@ -16,19 +16,22 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "cross-spawn": "^7.0.3",
     "fs": "0.0.1-security",
     "memoryjs": "^3.4.0",
     "node-sass": "^5.0.0",
     "path": "^0.12.7",
-    "registry-js": "^1.13.0",
     "structron": "^0.3.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "winreg": "^1.2.4"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.2",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/node": "^12.19.9",
+    "@types/winreg": "^1.2.30",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",

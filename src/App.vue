@@ -48,6 +48,9 @@
 					};
 				}
 			});
+			//window.onerror = (message, source, line, column, error) => {
+			//	console.error("ERRREROORE: " + message);
+			//};
 		},
 	});
 
