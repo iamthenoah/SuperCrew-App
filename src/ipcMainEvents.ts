@@ -11,7 +11,6 @@ ipcMain.handle('check-game-opened', (e: IpcMainInvokeEvent, args: string = 'Amon
 });
 
 ipcMain.handle('open-game', () => {
-    /*
     try {
         const key = new WinRegistry({
             hive: WinRegistry.HKLM,                       // open LM registry hive
@@ -34,7 +33,6 @@ ipcMain.handle('open-game', () => {
     catch (e) {
         throw new Error(e.message + ' Try opening the game manually.');
     }
-    */
 });
 
 

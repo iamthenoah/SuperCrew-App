@@ -4,9 +4,9 @@
 		<main>
 			<LoadingBar v-if="globalDisable" />
 			<div :class="{ 'disabled' : globalDisable }">
-				<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notification="openNotification($event)"/>
+				<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notify="openNotification($event)"/>
 			</div>
-			<Notification v-if="notify.duration != 0" v-on:close-notification="closeNotification" :duration="notify.duration" :message="notify.message" :type="notify.type"/>
+			<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
 		</main>
 	</div>
 </template>
@@ -38,16 +38,16 @@
 			Notification,
 		},
 		data() {
-			const notify: Notification | null = { message: '', type: '', duration: 0 };
+			const notification: Notification | null = { message: '', type: '', duration: 0 };
 			return {
 				globalDisable: false,
-				notify
+				notification
 			}
 		},
 		mounted() {
 			ipcRenderer.invoke('check-game-opened').then(async opened => {
 				const s = opened ? 'Among Us has been detected!' : 'Could not detect Among Us runnig...';
-				this.notify = {
+				this.notification = {
 					message: s,
 					type: opened ? 'success' : 'warning',
 					duration: s.length * 150 /* 150ms/chars, avg. -> 48ms/char */
@@ -59,10 +59,10 @@
 				this.globalDisable = toggle;
 			},
 			openNotification: function({ message, type }: NotificationParams) {
-				this.notify = { message, type, duration: message.length * 150 /* 150ms/chars, avg. -> 48ms/char */ } as Notification;
+				this.notification = { message, type, duration: message.length * 150 /* 150ms/chars, avg. -> 48ms/char */ } as Notification;
 			},
 			closeNotification: function() {
-				this.notify = { message: '', type: '', duration: 0 };
+				this.notification = { message: '', type: '', duration: 0 };
 			},
 		},
 	});
