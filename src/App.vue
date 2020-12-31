@@ -3,7 +3,9 @@
 		<WindowHeader />
 		<main>
 			<LoadingBar v-if="globalDisable" />
-			<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notification="openNotification($event)" :class="{ 'disable' : globalDisable }" />
+			<div :class="{ 'disabled' : globalDisable }">
+				<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notification="openNotification($event)"/>
+			</div>
 			<Notification v-if="notify.duration != 0" v-on:close-notification="closeNotification" :duration="notify.duration" :message="notify.message" :type="notify.type"/>
 		</main>
 	</div>

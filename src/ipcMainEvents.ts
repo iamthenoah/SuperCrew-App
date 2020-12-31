@@ -10,7 +10,8 @@ ipcMain.handle('check-game-opened', (e: IpcMainInvokeEvent, args: string = 'Amon
     return getProcesses().find((p: typeof ProcessObject) => p.szExeFile === args) != undefined;
 });
 
-ipcMain.handle('open-game', () : boolean => {
+ipcMain.handle('open-game', () => {
+    /*
     try {
         const key = new WinRegistry({
             hive: WinRegistry.HKLM,                       // open LM registry hive
@@ -28,17 +29,15 @@ ipcMain.handle('open-game', () : boolean => {
             );
 
             process.on('error', () => { throw new Error('Error opening Among Us.'); });
-            
-            return true;
         });
     }
     catch (e) {
         throw new Error(e.message + ' Try opening the game manually.');
     }
-    return false;
+    */
 });
 
 
-ipcMain.handle('call-error', () : boolean => {
+ipcMain.handle('call-error', () => {
     throw new Error('Error opening Among Us.');
 });

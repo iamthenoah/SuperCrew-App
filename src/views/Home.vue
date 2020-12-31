@@ -18,14 +18,14 @@
         methods: {
 			openAmongUs: function() {
 				this.$emit('submit', true);
-				ipcRenderer.invoke('call-error')
-					.then(opened => this.isGameOpened = opened)
+				ipcRenderer.invoke('open-game')
+					.then(() => setTimeout(() => this.isGameOpened = true, 4000))
 					.catch(async err => {
 						let s: string = err.message as string;
 						s = s.substring(s.lastIndexOf(':') + 1).trim();
 						await this.$emit('notification', { message: s, type: 'success' });
 					})
-					.finally(() => this.$emit('submit', false));
+					.finally(() => setTimeout(() => this.$emit('submit', false), 4000));
 			},
 		},
     });
