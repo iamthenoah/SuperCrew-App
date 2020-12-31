@@ -18,6 +18,7 @@ ipcMain.handle('open-game', () : boolean => {
         });
 
         key.values((err: Error, regs: WinRegistry.RegistryItem[]) => {
+            if (err) throw new Error('Could not locate Steam.');
             let steamRegistry: WinRegistry.RegistryItem | null = regs.find(v => v.name === 'InstallPath') || null;
             if (!steamRegistry) throw new Error('Steam does not seem to be installed.');
 
@@ -26,18 +27,18 @@ ipcMain.handle('open-game', () : boolean => {
                 [ '-applaunch', '945360' ]
             );
 
-            process.on('error', () => { throw new Error('An error occurred while opening Among Us.'); });
+            process.on('error', () => { throw new Error('Error opening Among Us.'); });
             
             return true;
         });
     }
     catch (e) {
-        throw new Error('Could not open game - ' + e.message + ' Try opening the game manually.');
+        throw new Error(e.message + ' Try opening the game manually.');
     }
     return false;
 });
 
 
 ipcMain.handle('call-error', () : boolean => {
-    throw new Error('An error occurred while opening Among Us.');
+    throw new Error('Error opening Among Us.');
 });

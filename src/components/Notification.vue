@@ -24,14 +24,14 @@
             duration: Number,
         },
         mounted() {
-            console.table(this.$props);
-            setTimeout(() => { 
-                this.emitCloseNotification();
+            setTimeout(() => {
+                if (this.show) this.emitCloseNotification();
             }, this.$props.duration);
         },
         computed: {
             setColor: function(): string {
-                return ['success', 'warning', 'error'].indexOf(this.$props.type!) > -1 ? this.$props.type! : 'error';
+                if (this.$props.type) return ['success', 'warning', 'error'].indexOf(this.$props.type) > -1 ? this.$props.type : 'error';
+                else return 'error';
             },
         },
         methods: {

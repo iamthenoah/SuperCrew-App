@@ -4,10 +4,7 @@
 		<main>
 			<LoadingBar v-if="globalDisable" />
 			<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notification="openNotification($event)" :class="{ 'disable' : globalDisable }" />
-			<div v-if="notify.duration != 0">
-				<pre>{{ notify }}</pre>
-				<Notification v-on:close-notification="closeNotification" :duration="notify.duration" :message="notify.message" :type="notify.type"/>
-			</div>
+			<Notification v-if="notify.duration != 0" v-on:close-notification="closeNotification" :duration="notify.duration" :message="notify.message" :type="notify.type"/>
 		</main>
 	</div>
 </template>
@@ -18,11 +15,19 @@
 	import LoadingBar from '@/components/LoadingBar.vue';
 	import Notification from '@/components/Notification.vue';
 
-	import { INotification } from '@/interfaces/INotification';
-	import { INotificationParams } from '@/interfaces/INotificationParams';
+	const { ipcRenderer } = window.require('electron');
 	import { defineComponent } from 'vue';
 
-	const { ipcRenderer } = window.require('electron');
+	type Notification = {
+    	message: string;
+    	type: string;
+    	duration: number;
+	};
+
+	type NotificationParams = {
+		message: string;
+    	type: string;
+	};
 
 	export default defineComponent({
 		components: {
@@ -31,7 +36,7 @@
 			Notification,
 		},
 		data() {
-			const notify: INotification | null = { message: '', messageType: '', duration: 0 };
+			const notify: Notification | null = { message: '', type: '', duration: 0 };
 			return {
 				globalDisable: false,
 				notify
@@ -42,25 +47,20 @@
 				const s = opened ? 'Among Us has been detected!' : 'Could not detect Among Us runnig...';
 				this.notify = {
 					message: s,
-					messageType: opened ? 'success' : 'warning',
+					type: opened ? 'success' : 'warning',
 					duration: s.length * 150 /* 150ms/chars, avg. -> 48ms/char */
-				} as INotification;
+				} as Notification;
 			});
 		},
 		methods: {
 			toggleGlobalSubmit: function(toggle: boolean) {
 				this.globalDisable = toggle;
 			},
-			openNotification: function({ message, messageType }: INotificationParams) {
-				console.log('PRE  openNotification');
-				this.notify = { message, messageType, duration: message.length * 150 /* 150ms/chars, avg. -> 48ms/char */ } as INotification;
-				console.table(this.notify);
-				console.log('POST openNotification');
+			openNotification: function({ message, type }: NotificationParams) {
+				this.notify = { message, type, duration: message.length * 150 /* 150ms/chars, avg. -> 48ms/char */ } as Notification;
 			},
 			closeNotification: function() {
-				console.log('PRE  closeNotification');
-				this.notify = { message: '', messageType: '', duration: 0 };
-				console.log('POST closeNotification');
+				this.notify = { message: '', type: '', duration: 0 };
 			},
 		},
 	});

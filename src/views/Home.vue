@@ -23,7 +23,7 @@
 					.catch(async err => {
 						let s: string = err.message as string;
 						s = s.substring(s.lastIndexOf(':') + 1).trim();
-						await this.$emit('notification', { message: s, messageType: 'error' });
+						await this.$emit('notification', { message: s, type: 'success' });
 					})
 					.finally(() => this.$emit('submit', false));
 			},
