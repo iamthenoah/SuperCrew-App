@@ -1,9 +1,9 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
-import './events';
+import './ipcMainEvents';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -25,8 +25,8 @@ async function createWindow() {
 		},
 	});
 
-	ipcMain.handle('minimize-window', () => { win.minimize(); });
-	ipcMain.handle('close-window', () => { win.close(); });
+	ipcMain.handle('minimize-window', () => win.minimize());
+	ipcMain.handle('close-window', () => win.close());
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -42,9 +42,7 @@ async function createWindow() {
 app.on('window-all-closed', () => {
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
+	if (process.platform !== 'darwin') app.quit();
 });
 
 

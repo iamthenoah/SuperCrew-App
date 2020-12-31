@@ -1,6 +1,6 @@
 <template>
     <div class="noselect" :class="{ 'fade-in': show, 'fade-out': !show }">
-        <div @click="closeNotification" :class="setColor" id="notification-container">
+        <div @click="emitCloseNotification" :class="setColor" id="notification-container">
             <section>
                 <p><strong>{{ message }}</strong></p>
             </section>
@@ -15,42 +15,29 @@
     export default defineComponent({
         data() {
             return {
-                show: true
+                show: true,
             }
         },
         props: {
-            duration: {
-                type: Number,
-                default: 0
-            },
-            message: {
-                type: String,
-                default: ""
-            },
-            messageType: {
-                type: String,
-                default: "error"
-            },
-            persistent: {
-                type: Boolean,
-                default: true
-            }
+            message: String,
+            type: String,
+            duration: Number,
         },
-        created() {
-            if (this.$props.duration > 0) {
-                setTimeout(() => {
-                    this.closeNotification();
-                }, this.$props.duration);            
-            }
+        mounted() {
+            console.table(this.$props);
+            setTimeout(() => { 
+                this.emitCloseNotification();
+            }, this.$props.duration);
         },
         computed: {
             setColor: function(): string {
-                return ['success', 'warning', 'error'].indexOf(this.$props.messageType) > -1 ? this.$props.messageType : 'error';
-            }
+                return ['success', 'warning', 'error'].indexOf(this.$props.type!) > -1 ? this.$props.type! : 'error';
+            },
         },
         methods: {
-            closeNotification: function() {
+            emitCloseNotification: function() {
                 this.show = false;
+                setTimeout(() => this.$emit('close-notification'), 250);
             }
         },
     });
