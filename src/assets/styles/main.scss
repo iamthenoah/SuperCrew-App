@@ -246,3 +246,27 @@
     border-radius: 3px;
     background: $darker; 
 }
+
+.standalone-icon > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.75;
+    height: 16.5px;
+    width: auto;
+}
+.standalone-icon {
+    cursor: pointer;
+    position: relative;
+    float: right;
+    margin: 0 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    transition: all ease 100ms;
+}
+
+.standalone-icon:hover {
+    background: rgba(white, 0.075);
+}

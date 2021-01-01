@@ -8,6 +8,7 @@
 			</div>
 			<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
 		</main>
+		<ControlOptions />
 	</div>
 </template>
 
@@ -16,6 +17,7 @@
 	import WindowHeader from '@/components/WindowHeader.vue';
 	import LoadingBar from '@/components/LoadingBar.vue';
 	import Notification from '@/components/Notification.vue';
+	import ControlOptions from '@/components/ControlOptions.vue';
 
 	const { ipcRenderer } = window.require('electron');
 	import { defineComponent } from 'vue';
@@ -36,6 +38,7 @@
 			WindowHeader,
 			LoadingBar,
 			Notification,
+			ControlOptions,
 		},
 		data() {
 			const notification: Notification | null = { message: '', type: '', duration: 0 };

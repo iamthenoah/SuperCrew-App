@@ -1,5 +1,7 @@
 <template>
 	<section>
+		<router-link to="/information" class="btn-inverted">Info</router-link>
+		<router-link to="/preferences" class="btn-inverted">Preferences</router-link>
 		<button v-if="!isGameOpened" @click="openAmongUs" class="btn center-h">Open Among Us</button>
 	</section>
 </template>
