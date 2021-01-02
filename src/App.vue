@@ -1,15 +1,11 @@
 <template> 
-	<div>
-		<WindowHeader />
-		<main>
-			<LoadingBar v-if="globalDisable" />
-			<div :class="{ 'disabled' : globalDisable }">
-				<router-view v-on:submit="toggleGlobalSubmit($event)" v-on:notify="openNotification($event)"/>
-			</div>
-			<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
-		</main>
-		<ControlOptions />
-	</div>
+	<WindowHeader />
+	<main>
+		<LoadingBar v-if="globalDisable" />
+		<router-view :class="{ 'disabled' : globalDisable }" v-on:submit="toggleGlobalSubmit($event)" v-on:notify="openNotification($event)"/>
+	</main>
+	<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
+	<ControlOptions />
 </template>
 
 <script lang="ts">
@@ -62,7 +58,7 @@
 				this.globalDisable = toggle;
 			},
 			openNotification: function({ message, type }: NotificationParams) {
-				this.notification = { message, type, duration: message.length * 150 /* 150ms/chars, avg. -> 48ms/char */ } as Notification;
+				this.notification = { message, type, duration: message.length * 150 } as Notification;
 			},
 			closeNotification: function() {
 				this.notification = { message: '', type: '', duration: 0 };

@@ -1,7 +1,5 @@
 <template>
 	<section>
-		<router-link to="/information" class="btn-inverted">Info</router-link>
-		<router-link to="/preferences" class="btn-inverted">Preferences</router-link>
 		<button v-if="!isGameOpened" @click="openAmongUs" class="btn center-h">Open Among Us</button>
 	</section>
 </template>
@@ -20,14 +18,14 @@
         methods: {
 			openAmongUs: function() {
 				this.$emit('submit', true);
-				ipcRenderer.invoke('open-game')
-					.then(() => setTimeout(() => this.isGameOpened = true, 4000))
+				ipcRenderer.invoke('call-error')
+					.then(() => this.isGameOpened = true)
 					.catch(async err => {
 						let s: string = err.message as string;
 						s = s.substring(s.lastIndexOf(':') + 1).trim();
-						await this.$emit('notify', { message: s, type: 'success' });
+						await this.$emit('notify', { message: s, type: 'error' });
 					})
-					.finally(() => setTimeout(() => this.$emit('submit', false), 4000));
+					.finally(() => this.$emit('submit', false));
 			},
 		},
     });

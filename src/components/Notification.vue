@@ -53,7 +53,7 @@
         position: absolute;
         font-size: 12px;
         width: 100%;
-        bottom: 0;
+        bottom: 50px;
         left: 0;
         height: auto;
         max-height: 50px;

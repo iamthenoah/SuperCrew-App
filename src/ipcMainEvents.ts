@@ -36,6 +36,10 @@ ipcMain.handle('open-game', () => {
 });
 
 
-ipcMain.handle('call-error', () => {
-    throw new Error('Error opening Among Us.');
+ipcMain.handle('call-error', () : Promise<void> => {
+    return new Promise(async(resolve, reject) => {
+        await setTimeout(() => {
+            reject('Error opening Among Us.');
+        }, 2000);
+    });
 });

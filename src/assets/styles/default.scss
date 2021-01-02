@@ -2,6 +2,10 @@
     background: $theme;
 }
 
+html {
+    height: 100%;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -74,11 +78,13 @@ hr {
 section {
     position: relative;
     padding: 10px 10px;
+    height: 100%;
 }
 
 main {
     position: relative;
     padding-top: 25px;
+    height: 100%;
 }
 
 header {
