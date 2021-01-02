@@ -2,7 +2,9 @@
 	<WindowHeader />
 	<main>
 		<LoadingBar v-if="globalDisable" />
-		<router-view :class="{ 'disabled' : globalDisable }" v-on:submit="toggleGlobalSubmit($event)" v-on:notify="openNotification($event)"/>
+		<div :class="{ 'disabled' : globalDisable }">
+			<router-view v-on:submit="globalSubmit($event)" />
+		</div>
 	</main>
 	<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
 	<ControlOptions />
@@ -14,19 +16,15 @@
 	import LoadingBar from '@/components/LoadingBar.vue';
 	import Notification from '@/components/Notification.vue';
 	import ControlOptions from '@/components/ControlOptions.vue';
-
-	const { ipcRenderer } = window.require('electron');
+	
+	import { NotificationType } from '@/common/enums/NotificationType';
 	import { defineComponent } from 'vue';
+	const { ipcRenderer } = window.require('electron');
 
 	type Notification = {
     	message: string;
-    	type: string;
+    	type: NotificationType;
     	duration: number;
-	};
-
-	type NotificationParams = {
-		message: string;
-    	type: string;
 	};
 
 	export default defineComponent({
@@ -37,31 +35,29 @@
 			ControlOptions,
 		},
 		data() {
-			const notification: Notification | null = { message: '', type: '', duration: 0 };
+			const notification: Notification = { message: '', type: NotificationType.ERROR, duration: 0 };
 			return {
 				globalDisable: false,
-				notification
+				notification,
 			}
 		},
 		mounted() {
-			ipcRenderer.invoke('check-game-opened').then(async opened => {
-				const s = opened ? 'Among Us has been detected!' : 'Could not detect Among Us runnig...';
-				this.notification = {
-					message: s,
-					type: opened ? 'success' : 'warning',
-					duration: s.length * 150 /* 150ms/chars, avg. -> 48ms/char */
-				} as Notification;
+			ipcRenderer.send('check-game-opened');
+			ipcRenderer.on('game-opened', (_: Electron.IpcRendererEvent, opened: boolean) => {
+				if (opened) this.$router.push('/home'); else this.$router.push('/');
+			});
+
+			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
+				if (message) this.notification = { message, type, duration } as Notification;
+				this.globalDisable = false;
 			});
 		},
 		methods: {
-			toggleGlobalSubmit: function(toggle: boolean) {
-				this.globalDisable = toggle;
-			},
-			openNotification: function({ message, type }: NotificationParams) {
-				this.notification = { message, type, duration: message.length * 150 } as Notification;
+			globalSubmit: function(submit: boolean) {
+				this.globalDisable = submit;
 			},
 			closeNotification: function() {
-				this.notification = { message: '', type: '', duration: 0 };
+				this.notification = { message: '', type: NotificationType.ERROR, duration: 0 };
 			},
 		},
 	});

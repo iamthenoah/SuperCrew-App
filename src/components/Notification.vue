@@ -1,9 +1,7 @@
 <template>
     <div class="noselect" :class="{ 'fade-in': show, 'fade-out': !show }">
         <div @click="emitCloseNotification" :class="setColor" id="notification-container">
-            <section>
-                <p><strong>{{ message }}</strong></p>
-            </section>
+            <p><strong>{{ message }}</strong></p>
         </div>
     </div>
 </template>
@@ -58,6 +56,10 @@
         height: auto;
         max-height: 50px;
         color: white;
+    }
+
+    p {
+        margin: 5px 10px;
     }
 
     .error {

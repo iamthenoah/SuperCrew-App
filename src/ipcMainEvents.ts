@@ -1,16 +1,20 @@
 'use strict'
 
-import { ipcMain, IpcMainInvokeEvent } from 'electron';
+import { ipcMain } from 'electron';
+import { NotificationType } from '@/common/enums/NotificationType';
 import { spawn } from 'cross-spawn';
 import path from 'path';
 import WinRegistry from 'winreg';
 const { getProcesses, ProcessObject } = require('memoryjs');
 
-ipcMain.handle('check-game-opened', (e: IpcMainInvokeEvent, args: string = 'Among Us.exe') : boolean => {
-    return getProcesses().find((p: typeof ProcessObject) => p.szExeFile === args) != undefined;
+ipcMain.on('check-game-opened', (e: Electron.IpcMainEvent) => {
+    const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
+    if (!opened) e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
+    else e.reply('notify', 'Among Us is running...', NotificationType.SUCCESS)
+    e.reply('game-opened', opened);
 });
 
-ipcMain.handle('open-game', () => {
+ipcMain.on('open-game', (e: Electron.IpcMainEvent) => {
     try {
         const key = new WinRegistry({
             hive: WinRegistry.HKLM,                       // open LM registry hive
@@ -27,19 +31,25 @@ ipcMain.handle('open-game', () => {
                 [ '-applaunch', '945360' ]
             );
 
-            process.on('error', () => { throw new Error('Error opening Among Us.'); });
+            process.on('error', () => { throw new Error('Could not open Among Us.'); });
+            setTimeout(() => {
+                e.reply('notify', 'Game is now running...', NotificationType.SUCCESS);
+                e.reply('game-opened', true);
+            }, 5000);
         });
     }
-    catch (e) {
-        throw new Error(e.message + ' Try opening the game manually.');
+    catch (error) {
+        e.reply('notify', error.message + ' Try opening the game manually.');
     }
 });
 
-
-ipcMain.handle('call-error', () : Promise<void> => {
-    return new Promise(async(resolve, reject) => {
-        await setTimeout(() => {
-            reject('Error opening Among Us.');
-        }, 2000);
-    });
+ipcMain.on('call-error', (e: Electron.IpcMainEvent) => {
+    setTimeout(() => {
+        try {
+            throw new Error('EROEROEREOOEOROEROEOR.');
+        }
+        catch (error) {
+            e.reply('notify', error.message + ' Try opening the game manually.');
+        }
+    }, 2000);
 });
