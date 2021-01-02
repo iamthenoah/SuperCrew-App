@@ -1,9 +1,11 @@
 <template>
-	<section>
-		<button @click="openAmongUs" class="btn">Open Among Us</button>
+	<section class="content noselect">
+		<h1>{{ RandomGameTip.role }}</h1>
+		<hr>
+		<p>{{ RandomGameTip.tip }}</p>
 	</section>
 	<section>
-		<p>{{ RandomGameTip }}</p>
+		<button @click="openAmongUs" class="btn center-h">Open Among Us</button>
 	</section>
 </template>
 
@@ -23,8 +25,8 @@
 			},
 		},
 		computed: {
-			RandomGameTip: function(): IGameTip {				
-				const gameTip: IGameTip = GameTips[Math.floor(Math.random() * GameTips.length)]
+			RandomGameTip: function(): IGameTip {
+				const gameTip: IGameTip = GameTips[Math.floor(Math.random() * GameTips.length)];
 				return gameTip;
 			}
 		},

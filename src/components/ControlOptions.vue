@@ -2,16 +2,16 @@
     <div id="control-container">
         <div class="noselect">
             <section>
-                <p>Tha00ber</p>
-                <router-link to="/preferences">
-                    <div class="standalone-icon"><img src="@/assets/static/icons/gear.png"></div>
-                </router-link>
-                <div class="standalone-icon"><img src="@/assets/static/icons/headphones.png"></div>
-                <div class="standalone-icon"><img src="@/assets/static/icons/microphone.png"></div>
+                <ul>
+                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/microphone.png"></div></ol>
+                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/headphones.png"></div></ol>
+                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/gear.png"></div></ol>
+                </ul>
             </section>
         </div>
     </div>
 </template>
+
 <script lang="ts">
 
     import { defineComponent } from 'vue';
@@ -33,6 +33,17 @@
         left: 0;
         height: 50px;
         background: $darker;
+    }
+
+    ul {
+        position: relative;
+        top: 25%;
+        float: right;
+    }
+
+    ol {
+        margin: 0 2px;
+        float: left;
     }
 
 </style>
