@@ -33,8 +33,9 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
-, "src/iohook.ts"  ],
+    "tests/**/*.tsx", 
+    "src/keyPressEvents.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
