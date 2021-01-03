@@ -1,0 +1,30 @@
+[
+    {
+        "role": "crewmate",
+        "tip": "Check for task animations not playing to spot impostors faking tasks."
+    },
+    {
+        "role": "impostor",
+        "tip": "Downloading a file takes around 6-7 seconds."
+    },
+    {
+        "role": "impostor",
+        "tip": "Sometimes when playing with another impostor, not making a single kill can bring you to victory."
+    },
+    {
+        "role": "crewmate",
+        "tip": "Be suspicious of players you have not seen the entire game."
+    },
+    {
+        "role": "impostor",
+        "tip": "Proving your innocence is more important than killing."
+    },
+    {
+        "role": "impostor",
+        "tip": "When two crew mates are left, trigging a sabotage is a guaranteed victory."
+    },
+    {
+        "role": "impostor",
+        "tip": "Sometimes, it is necessary to blame other impostors directly to prove your innocence."
+    }
+]

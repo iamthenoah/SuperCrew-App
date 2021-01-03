@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import './ipcMainEvents';
+import './iohook';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -11,16 +12,15 @@ protocol.registerSchemesAsPrivileged([
 	{ scheme: 'app', privileges: { secure: true, standard: true } }
 ]);
 
-
 async function createWindow() {
 	const win = new BrowserWindow({
-		width: 275, // 275:400
+		width: 1075, // 275:400
 		height: 400,
 		frame: false,
 		resizable: false,
 		fullscreenable: false,
 		webPreferences: {
-			devTools: false,
+			//devTools: false,
 			nodeIntegration: true
 		},
 	});

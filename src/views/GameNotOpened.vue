@@ -1,21 +1,21 @@
 <template>
-	<section class="content noselect">
-		<h1>{{ RandomGameTip.role }}</h1>
-		<hr>
-		<p>{{ RandomGameTip.tip }}</p>
-	</section>
-	<section>
-		<button @click="openAmongUs" class="btn center-h">Open Among Us</button>
-	</section>
+	<div class="content noselect">		
+		<section class="space-bottom">
+			<h1>{{ RandomGameTip.role.toUpperCase() }} TIP</h1>
+			<hr>
+			<p>{{ RandomGameTip.tip }}</p>
+		</section>
+		<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
+	</div>
 </template>
 
 <script lang="ts">
 
 	import { defineComponent } from 'vue';
-	import { GameTips } from '@/assets/gameTips';
 	import { IGameTip } from '@/common/interfaces/IGameTip';
 	const { ipcRenderer } = window.require('electron');
-	
+	import GameTips from '@/assets/static/GameTips.json';
+
     export default defineComponent({
 		emits: ['submit'],
 		methods: {
@@ -25,10 +25,7 @@
 			},
 		},
 		computed: {
-			RandomGameTip: function(): IGameTip {
-				const gameTip: IGameTip = GameTips[Math.floor(Math.random() * GameTips.length)];
-				return gameTip;
-			}
+			RandomGameTip: (): IGameTip => GameTips[Math.floor(Math.random() * GameTips.length)] as IGameTip
 		},
     });
 

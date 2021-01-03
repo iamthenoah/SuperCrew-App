@@ -1,14 +1,24 @@
 <template>
-    <div id="control-container">
-        <div class="noselect">
-            <section>
-                <ul>
-                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/microphone.png"></div></ol>
-                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/headphones.png"></div></ol>
-                    <ol><div class="standalone-icon"><img src="@/assets/static/icons/gear.png"></div></ol>
-                </ul>
-            </section>
-        </div>
+    <div id="control-container" class="noselect">
+        <ul>
+            <ol>
+                <div class="standalone-icon" @click="mute">
+                    <img v-if="!muted" src="@/assets/static/icons/microphone.png">
+                    <img v-else src="@/assets/static/icons/microphone_disabled.png">
+                </div>
+            </ol>
+            <ol>
+                <div class="standalone-icon" @click="deafen">
+                    <img v-if="!deafened" src="@/assets/static/icons/headphones.png">
+                    <img v-else src="@/assets/static/icons/headphones_disabled.png">
+                </div>
+            </ol>
+            <ol>
+                <router-link to="/preferences">
+                    <div class="standalone-icon"><img src="@/assets/static/icons/gear.png"></div>
+                </router-link>
+            </ol>
+        </ul>
     </div>
 </template>
 
@@ -17,7 +27,20 @@
     import { defineComponent } from 'vue';
 
     export default defineComponent({
-
+        data() {
+            return {
+                muted: false,
+                deafened: false
+            }
+        },
+        methods: {
+            mute: function() {
+                this.muted = !this.muted;
+            },
+            deafen: function() {
+                this.deafened = !this.deafened;
+            }
+        },
     });
 
 </script>
@@ -36,9 +59,12 @@
     }
 
     ul {
-        position: relative;
-        top: 25%;
-        float: right;
+        display: flex;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: auto;
     }
 
     ol {

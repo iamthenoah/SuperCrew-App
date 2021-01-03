@@ -7,7 +7,9 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
@@ -32,7 +34,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/iohook.ts"  ],
   "exclude": [
     "node_modules"
   ]
