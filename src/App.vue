@@ -2,7 +2,7 @@
 	<WindowHeader />
 	<main>
 		<LoadingBar v-if="globalDisable" />
-		<div :class="{ 'disabled' : globalDisable }">
+		<div class="content noselect" :class="{ 'disabled' : globalDisable }">
 			<router-view v-on:submit="globalSubmit($event)" />
 		</div>
 	</main>

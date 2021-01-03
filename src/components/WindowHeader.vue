@@ -34,6 +34,11 @@
     
 	@import './src/assets/styles/variables.scss';
 
+    header {
+        position: fixed;
+        z-index: 1000;
+    }
+    
     .app-name {
         position: absolute;
         top: 50%;
@@ -48,6 +53,7 @@
 
     .titlebar-controls {
         position: absolute;
+        z-index: 10000;
         height: 100%;
         top: 0;
         right: 0;

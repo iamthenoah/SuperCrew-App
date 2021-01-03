@@ -1,5 +1,5 @@
 <template>
-	<div class="content noselect">		
+	<div>		
 		<section class="space-bottom">
 			<h1>{{ RandomGameTip.role.toUpperCase() }} TIP</h1>
 			<hr>

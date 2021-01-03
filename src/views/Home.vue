@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<h1>HOME</h1>
-		<p>{{ gameCode }}</p>
+		<pre>{{ GameData }}</pre>
 	</section>
 </template>
 
@@ -9,15 +9,24 @@
 
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
+	import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
     export default defineComponent({
+		emits: ['submit'],
 		data() {
+			const GameData: AmongUsGameData | null = null;
 			return {
-				gameCode: 'No Game Code Found.'
+				GameData
 			}
 		},
 		mounted() {
-			ipcRenderer.on('game-code', (_: Electron.IpcRendererEvent, code: string) => this.gameCode = code);
+			ipcRenderer.on('game-data', (_: Electron.IpcRendererEvent, data: AmongUsGameData | null) => this.GameData = data as null);
+		},
+		methods: {
+			shutdownApp: function () {
+				this.$emit('submit');
+				ipcRenderer.send('shutdown-game-proxy');
+			}
 		},
 	});
 

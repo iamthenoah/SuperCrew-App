@@ -9,6 +9,7 @@ import { getProcesses, ProcessObject } from 'memoryjs';
 import AmongUsProxy from '@/common/proxy/AmongUsProxy';
 import Util from '@/common/proxy/Util';
 import { IOffsets } from '@/common/proxy/interfaces/IOffsets';
+import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
 
 
@@ -67,23 +68,42 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
     }
 });
 
+
+var closeProxy: boolean = false;
+
+ipcMain.on('shutdown-game-proxy', () => closeProxy = true);
+
 ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
     try {
 
         const version: string | null = Util.getCurrentVersion();
         const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error');
-        const GameProxy: AmongUsProxy | null = new AmongUsProxy(offsets as IOffsets);
-        if (!GameProxy) throw new Error('Fatal error cause the game proxy to fail...');
+        let GameProxy: AmongUsProxy | null = new AmongUsProxy(offsets as IOffsets);
+        if (!GameProxy) throw new Error('Error caused the game proxy to fail...');
         
         const tick = () => {
-            GameProxy.operate();
-            e.reply('game-code', GameProxy.gameCode);
-			setTimeout(tick, 20);
-		};
-		tick();
+            if (closeProxy && GameProxy) {
+                GameProxy = null;
+                e.reply('notify', 'App has now been disabled for Among Us', NotificationType.WARNING);
+                return;
+            } else {
+                GameProxy!.operate();
+                e.reply('game-data', {
+                    players: GameProxy!.players,
+                    code: GameProxy!.gameCode,
+                    state: {
+                        game: GameProxy!.gameState,
+                        discussion: GameProxy!.discussionState
+                    }
+                } as AmongUsGameData);
+                setTimeout(tick, 20);
+            }
+        };
+        
+        if (GameProxy && !closeProxy) tick();
 
-        e.reply('notify', `App running with Among Us version ${version}...`, NotificationType.SUCCESS);
+        e.reply('notify', `App running with Game version ${version}...`, NotificationType.SUCCESS);
     }
     catch (error) {
         e.reply('notify', error.message);

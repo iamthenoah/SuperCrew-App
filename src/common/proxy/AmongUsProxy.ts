@@ -58,7 +58,6 @@ export default class AmongUsProxy {
 
             let playerAddrPtr = allPlayers + this.offsets.playerAddrPtr;
             var impostors = 0, crewmates = 0;
-            var me: IPlayer | null = null;
             this.players = [];
 
             for (let i = 0; i < playerCount; i++, playerAddrPtr += 4) {
@@ -66,21 +65,18 @@ export default class AmongUsProxy {
                 let playerData: Buffer = this.Memory.fromBuffer(address + last, this.offsets.player.bufferLength);
                 let player = this.parsePlayer(address + last, playerData);
                 player.properties.isImpostor ? impostors++ : crewmates++;
-                if (player.properties.isLocal) me = player;
-                else this.players.push(player);
+                this.players.push(player);
             }
 
-            if (me) {
-                for (let i = 0; i < this.players.length; i++) {
-                    const player = this.players[i];
-                    let o = [
-                        me.coordinates.x - player.coordinates.x,
-                        me.coordinates.y - player.coordinates.y
-                    ];
-                    let d = Math.sqrt(o[0] * o[0] + o[1] * o[1]).toFixed(2);
-                    let name = player.properties.isDead ? `(${player.name})` : player.name;
-                }
-            }
+            /*
+                const player = this.players[i];
+                let o = [
+                    me.coordinates.x - player.coordinates.x,
+                    me.coordinates.y - player.coordinates.y
+                ];
+                let d = Math.sqrt(o[0] * o[0] + o[1] * o[1]).toFixed(2);
+                let name = player.properties.isDead ? `(${player.name})` : player.name;
+            */
         }
     }
 
