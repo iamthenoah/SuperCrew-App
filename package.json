@@ -18,6 +18,7 @@
     "core-js": "^3.6.5",
     "cross-spawn": "^7.0.3",
     "fs": "0.0.1-security",
+    "iohook": "^0.7.2",
     "memoryjs": "^3.4.0",
     "node-sass": "^5.0.0",
     "path": "^0.12.7",
@@ -49,5 +50,18 @@
     "sass-loader": "^10.1.0",
     "typescript": "^3.9.7",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.5"
+  },
+  "iohook": {
+    "targets": [
+      "node-72",
+      "electron-85"
+    ],
+    "platforms": [
+      "win32"
+    ],
+    "arches": [
+      "x64",
+      "ia32"
+    ]
   }
 }
