@@ -11,20 +11,7 @@ import Util from '@/common/proxy/Util';
 import { IOffsets } from '@/common/proxy/interfaces/IOffsets';
 import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
-
-
-ipcMain.on('call-error', (e: IpcMainEvent) => {
-    setTimeout(() => {
-        try {
-            throw new Error('EROEROEREOOEOROEROEOR.');
-        }
-        catch (error) {
-            e.reply('notify', error.message + ' Try opening the game manually.');
-        }
-    }, 2000);
-});
-
-
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
     try {
@@ -57,25 +44,23 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
             );
 
             process.on('error', () => { throw new Error('Could not open Among Us.'); });
-            setTimeout(() => {
-                e.reply('notify', 'Game is now running...', NotificationType.SUCCESS);
-                e.reply('game-opened', true);
-            }, 5000);
+            e.reply('game-opened', true);
+            e.reply('notify', 'Game is now running...', NotificationType.SUCCESS);
         });
     }
     catch (error) {
+        e.reply('game-opened', false);
         e.reply('notify', error.message + ' Try opening the game manually.');
     }
 });
 
-
-var closeProxy: boolean = false;
+let closeProxy: boolean = false;
+export const CloseProxy = () => closeProxy = true;
 
 ipcMain.on('shutdown-game-proxy', () => closeProxy = true);
 
 ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
     try {
-
         const version: string | null = Util.getCurrentVersion();
         const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error');
@@ -85,19 +70,20 @@ ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
         const tick = () => {
             if (closeProxy && GameProxy) {
                 GameProxy = null;
-                e.reply('notify', 'App has now been disabled for Among Us', NotificationType.WARNING);
+                e.reply('notify', 'App has now been disabled for Among Us.', NotificationType.WARNING);
                 return;
             } else {
                 GameProxy!.operate();
-                e.reply('game-data', {
+                const data = {
                     players: GameProxy!.players,
                     code: GameProxy!.gameCode,
                     state: {
                         game: GameProxy!.gameState,
                         discussion: GameProxy!.discussionState
                     }
-                } as AmongUsGameData);
-                setTimeout(tick, 20);
+                } as AmongUsGameData;
+                e.reply('game-data', data);
+                setTimeout(tick, isDevelopment ? 1000 : 50);
             }
         };
         
@@ -106,6 +92,7 @@ ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
         e.reply('notify', `App running with Game version ${version}...`, NotificationType.SUCCESS);
     }
     catch (error) {
+        e.reply('game-opened', false);
         e.reply('notify', error.message);
     }
 });

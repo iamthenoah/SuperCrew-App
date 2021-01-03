@@ -48,7 +48,7 @@
 
     #notification-container {
         cursor: pointer;
-        position: fixed;
+        position: absolute;
         font-size: 12px;
         width: 100%;
         bottom: 50px;

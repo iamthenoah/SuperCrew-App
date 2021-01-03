@@ -3,6 +3,7 @@
 import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { CloseProxy } from './ipcMainEvents';
 import './ipcMainEvents';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -37,11 +38,9 @@ async function createWindow() {
 };
 
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform !== 'darwin') app.quit();
+	CloseProxy();
+	app.quit();
 });
 
 

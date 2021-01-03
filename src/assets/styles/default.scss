@@ -55,6 +55,7 @@ a, button {
 
 p {
     line-height: 20px;
+    margin: 3px 0;
     display:inline-block;
     word-wrap: break-word;
 }
@@ -94,4 +95,8 @@ header {
     height: 25px;
     user-select: none;
     -webkit-app-region: drag;
+}
+
+h1 {
+    margin: 10px 0;
 }
