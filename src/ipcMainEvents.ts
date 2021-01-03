@@ -1,20 +1,44 @@
 'use strict'
 
-import { ipcMain } from 'electron';
+import { ipcMain, IpcMainEvent } from 'electron';
 import { NotificationType } from '@/common/enums/NotificationType';
 import { spawn } from 'cross-spawn';
 import path from 'path';
 import WinRegistry from 'winreg';
-const { getProcesses, ProcessObject } = require('memoryjs');
+import { getProcesses, ProcessObject } from 'memoryjs';
+import AmongUsProxy from '@/common/proxy/AmongUsProxy';
+import Util from '@/common/proxy/Util';
+import { IOffsets } from '@/common/proxy/interfaces/IOffsets';
 
-ipcMain.on('check-game-opened', (e: Electron.IpcMainEvent) => {
-    const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
-    if (!opened) e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
-    else e.reply('notify', 'Among Us is running...', NotificationType.SUCCESS)
-    e.reply('game-opened', opened);
+
+
+ipcMain.on('call-error', (e: IpcMainEvent) => {
+    setTimeout(() => {
+        try {
+            throw new Error('EROEROEREOOEOROEROEOR.');
+        }
+        catch (error) {
+            e.reply('notify', error.message + ' Try opening the game manually.');
+        }
+    }, 2000);
 });
 
-ipcMain.on('open-game', (e: Electron.IpcMainEvent) => {
+
+
+ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
+    try {
+        const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
+        if (!opened) e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
+        else e.reply('notify', 'Among Us is running...', NotificationType.SUCCESS);
+        e.reply('game-opened', opened);
+    }
+    catch (error) {
+        e.reply('game-opened', false);
+        e.reply('notify', error.message);
+    }
+});
+
+ipcMain.on('open-game', (e: IpcMainEvent) => {
     try {
         const key = new WinRegistry({
             hive: WinRegistry.HKLM,                       // open LM registry hive
@@ -43,13 +67,25 @@ ipcMain.on('open-game', (e: Electron.IpcMainEvent) => {
     }
 });
 
-ipcMain.on('call-error', (e: Electron.IpcMainEvent) => {
-    setTimeout(() => {
-        try {
-            throw new Error('EROEROEREOOEOROEROEOR.');
-        }
-        catch (error) {
-            e.reply('notify', error.message + ' Try opening the game manually.');
-        }
-    }, 2000);
+ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
+    try {
+
+        const version: string | null = Util.getCurrentVersion();
+        const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
+        if (!offsets) throw new Error('Could not load game offests... Server ran into an error');
+        const GameProxy: AmongUsProxy | null = new AmongUsProxy(offsets as IOffsets);
+        if (!GameProxy) throw new Error('Fatal error cause the game proxy to fail...');
+        
+        const tick = () => {
+            GameProxy.operate();
+            e.reply('game-code', GameProxy.gameCode);
+			setTimeout(tick, 20);
+		};
+		tick();
+
+        e.reply('notify', `App running with Among Us version ${version}...`, NotificationType.SUCCESS);
+    }
+    catch (error) {
+        e.reply('notify', error.message);
+    }
 });

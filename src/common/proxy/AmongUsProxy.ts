@@ -15,26 +15,12 @@ export default class AmongUsProxy {
     private PlayerStruct: Struct;
     private offsets: IOffsets;
 
-    private discussionState: DiscussionState = DiscussionState.NONE;
-    private gameState: GameState = GameState.UNKNOWN;
+    public discussionState: DiscussionState = DiscussionState.NONE;
+    public gameState: GameState = GameState.UNKNOWN;
     
-    private gameCode: string | null = null;
-    private players: Array<IPlayer>;
-    private inGame: Boolean;
-    private active: boolean;
-
-    public operate(interval: number = 1000) {
-        this.active = true;
-        const tick = () => {
-            this.loop();
-			setTimeout(tick, interval);
-		};
-		tick();
-    }
-
-    public shutdown() {
-        this.active = false;
-    }
+    public gameCode: string | null = null;
+    public players: Array<IPlayer>;
+    public inGame: Boolean;
 
     constructor(offsets: IOffsets) {
         this.Memory = new MemoryReader();
@@ -42,7 +28,6 @@ export default class AmongUsProxy {
         this.players = [];
         this.offsets = offsets;
         this.inGame = false;
-        this.active = false;
         
         this.PlayerStruct = new Struct();
         for (const member of offsets.player.struct)
@@ -51,67 +36,50 @@ export default class AmongUsProxy {
 			    : this.PlayerStruct = this.PlayerStruct.addMember(Struct.TYPES[member.type.toString()], member.name);
     }
 
-    private loop(): void {
-        if (this.active) {
-            console.clear();
-            if (this.Memory.checkProcess()) {
-    
-                let meetingHud = this.Memory.read<number>(MemDT.POINTER, this.offsets.meetingHud);
-                let meetingHud_cachePtr = meetingHud === 0 ? 0 : this.Memory.read<number>(MemDT.UINT32, this.offsets.meetingHudCachePtr, meetingHud);
-                let meetingHudState = meetingHud_cachePtr === 0 ? 4 : this.Memory.read(MemDT.INT, this.offsets.meetingHudState, meetingHud, 4);
-    
-                let gameStateCode = this.Memory.read<number>(MemDT.INT, this.offsets.gameState);
-                let allPlayersPtr = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayersPtr) & 0xffffffff;
-                let allPlayers = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayers, allPlayersPtr);
-                let playerCount: number = gameStateCode !== 0 ? this.Memory.read(MemDT.INT as const, this.offsets.playerCount, allPlayersPtr) : 0;
-    
-                this.discussionState = DiscussionState[DiscussionState[meetingHudState]];
-                this.gameState = this.discussionState == 4 
-                    ? GameState[GameState[gameStateCode]] 
-                    : GameState.DISCUSSION;
-                this.inGame = (this.gameState != GameState.MENU && this.gameState != GameState.UNKNOWN);
-                this.gameCode = this.inGame ? this.getGameCode() : this.gameCode;
+    public operate(): void {
+        console.clear();
+        if (this.Memory.checkProcess()) {
 
-                console.log("APP RUNNING...");
-                console.log("GAME STATE:    " + GameState[this.gameState]);
-                
-                if (this.inGame) {
-                    console.log("GAME CODE:     " + this.gameCode);
-                    console.log("PLAYERS:       " + this.players.filter(p => p.properties.isConnected).length);
-                    console.log("DISC STATE:    " + DiscussionState[this.discussionState]);
-                }
+            let meetingHud = this.Memory.read<number>(MemDT.POINTER, this.offsets.meetingHud);
+            let meetingHud_cachePtr = meetingHud === 0 ? 0 : this.Memory.read<number>(MemDT.UINT32, this.offsets.meetingHudCachePtr, meetingHud);
+            let meetingHudState = meetingHud_cachePtr === 0 ? 4 : this.Memory.read(MemDT.INT, this.offsets.meetingHudState, meetingHud, 4);
 
-                let playerAddrPtr = allPlayers + this.offsets.playerAddrPtr;
-                var impostors = 0, crewmates = 0;
-                var me: IPlayer | null = null;
-                this.players = [];
-    
-                for (let i = 0; i < playerCount; i++, playerAddrPtr += 4) {
-                    let { address, last } = this.Memory.offset(playerAddrPtr, this.offsets.player.offsets);
-                    let playerData: Buffer = this.Memory.fromBuffer(address + last, this.offsets.player.bufferLength);
-                    let player = this.parsePlayer(address + last, playerData);
-                    player.properties.isImpostor ? impostors++ : crewmates++;
-                    if (player.properties.isLocal) me = player;
-                    else this.players.push(player);
-                }
+            let gameStateCode = this.Memory.read<number>(MemDT.INT, this.offsets.gameState);
+            let allPlayersPtr = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayersPtr) & 0xffffffff;
+            let allPlayers = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayers, allPlayersPtr);
+            let playerCount: number = gameStateCode !== 0 ? this.Memory.read(MemDT.INT as const, this.offsets.playerCount, allPlayersPtr) : 0;
 
-                console.log("_______________");
+            this.discussionState = DiscussionState[DiscussionState[meetingHudState]];
+            this.gameState = this.discussionState == 4 
+                ? GameState[GameState[gameStateCode]] 
+                : GameState.DISCUSSION;
+            this.inGame = (this.gameState != GameState.MENU && this.gameState != GameState.UNKNOWN);
+            this.gameCode = this.inGame ? this.getGameCode() : this.gameCode;
 
-                if (me) {
-                    for (let i = 0; i < this.players.length; i++) {
-                        const player = this.players[i];
-                        let o = [
-                            me.coordinates.x - player.coordinates.x,
-                            me.coordinates.y - player.coordinates.y
-                        ];
-                        let d = Math.sqrt(o[0] * o[0] + o[1] * o[1]).toFixed(2);
-                        let name = player.properties.isDead ? `(${player.name})` : player.name;
-                        console.log(`[${player.properties.isConnected ? 'C' : 'D'}] ${name} : ${d}m`);
-                    }
-                }
+            let playerAddrPtr = allPlayers + this.offsets.playerAddrPtr;
+            var impostors = 0, crewmates = 0;
+            var me: IPlayer | null = null;
+            this.players = [];
+
+            for (let i = 0; i < playerCount; i++, playerAddrPtr += 4) {
+                let { address, last } = this.Memory.offset(playerAddrPtr, this.offsets.player.offsets);
+                let playerData: Buffer = this.Memory.fromBuffer(address + last, this.offsets.player.bufferLength);
+                let player = this.parsePlayer(address + last, playerData);
+                player.properties.isImpostor ? impostors++ : crewmates++;
+                if (player.properties.isLocal) me = player;
+                else this.players.push(player);
             }
-            else {
-                console.log("GAME NOT OPENED.");
+
+            if (me) {
+                for (let i = 0; i < this.players.length; i++) {
+                    const player = this.players[i];
+                    let o = [
+                        me.coordinates.x - player.coordinates.x,
+                        me.coordinates.y - player.coordinates.y
+                    ];
+                    let d = Math.sqrt(o[0] * o[0] + o[1] * o[1]).toFixed(2);
+                    let name = player.properties.isDead ? `(${player.name})` : player.name;
+                }
             }
         }
     }
