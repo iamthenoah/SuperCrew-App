@@ -7,7 +7,7 @@
 			<p>{{ RandomGameTip.tip }}</p>
 		</section>
 		<section>
-			<p id="game-code"><strong>LNFWIF</strong></p>
+    		<div id="game-code">discord</div>
 		</section>
 		<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
 	</div>
@@ -54,7 +54,8 @@
 		height: 40px;
 		text-align: center;
 		line-height: 41px;
-		font-family: 'Uni Sans';
+		text-transform: uppercase;
+        font-family: 'Uni Sans', cursive;
 	}
 
 </style>
