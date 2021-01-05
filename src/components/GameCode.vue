@@ -1,14 +1,10 @@
 <template>
+	<button class="btn large" id="game-code">{{ code }}</button>
 </template>
 
 <script lang="ts">
 
 	import { defineComponent } from 'vue';
-
-	export interface GameTip {
-	    role: string;
-    	tip: string;
-	}
 
     export default defineComponent({
         props: {
@@ -27,14 +23,12 @@
 	@import './src/assets/styles/font.scss';
 
 	#game-code {
-		border-radius: $green;
-		background: rgba($green, 0.5);
-		font-size: 22px;
-		width: 100%;
-		height: 40px;
-		text-align: center;
-		line-height: 41px;
-        font-family: 'Bebas Neue', cursive;
+		border: rgba(white, 0.1) 3px solid;
+		background: $dark;
+		font-size: 20px;
+		height: 50px;
+		font-family: 'Oswald', sans-serif;
+		font-weight: 600;
 	}
 
 </style>

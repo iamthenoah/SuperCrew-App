@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<button class="btn-danger large" @click="shutdownProxy">shutdown proxy</button>
+		<button v-if="proxy" class="btn-danger large" @click="shutdownProxy">shutdown proxy</button>
 		<section v-if="GameData">
-			<div id="game-code"><p>{{ GameData.code }}</p></div>
+			<GameCode :gameCode="GameData.lobbyCode" />
 			<p>Players:</p>
 			<div v-bind:key="player.id" v-for="player in GameData.players">
 				<PlayerAvatar :player="player" />
@@ -13,20 +13,26 @@
 
 <script lang="ts">
 
+/*
+*/
+
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 	import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
+	import GameCode from '@/components/GameCode.vue';
 	import PlayerAvatar from '@/components/PlayerAvatar.vue';
 
     export default defineComponent({
 		emits: ['submit'],
 		components: {
-			PlayerAvatar
+			PlayerAvatar,
+			GameCode
 		},
 		data() {
 			const GameData: AmongUsGameData | null = null;
 			return {
-				GameData
+				GameData,
+				proxy: true
 			}
 		},
 		mounted() {
@@ -36,6 +42,7 @@
 			shutdownProxy: function () {
 				this.$emit('submit');
 				ipcRenderer.send('shutdown-game-proxy');
+				this.proxy = false;
 			}
 		},
 	});
@@ -45,5 +52,6 @@
 <style lang="scss">
 
 	@import './src/assets/styles/variables.scss';
+
 
 </style>

@@ -7,7 +7,6 @@
 			<p>{{ RandomGameTip.tip }}</p>
 		</section>
 		<section>
-    		<div id="game-code">discord</div>
 		</section>
 		<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
 	</div>
@@ -45,17 +44,5 @@
 <style lang="scss" scoped>
 
 	@import './src/assets/styles/variables.scss';
-
-	#game-code {
-		border-radius: $green;
-		background: rgba($green, 0.5);
-		font-size: 22px;
-		width: 100%;
-		height: 40px;
-		text-align: center;
-		line-height: 41px;
-		text-transform: uppercase;
-        font-family: 'Uni Sans', cursive;
-	}
 
 </style>

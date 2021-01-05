@@ -4,7 +4,7 @@ import { IPlayer } from "./interfaces/IPlayer";
 
 export interface AmongUsGameData {
     players: IPlayer[];
-    code: string;
+    lobbyCode: string;
     state: {
         game: GameState;
         discussion: DiscussionState;

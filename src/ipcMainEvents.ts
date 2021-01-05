@@ -76,7 +76,7 @@ ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
                 GameProxy!.operate();
                 const data = {
                     players: GameProxy!.players,
-                    code: GameProxy!.gameCode,
+                    lobbyCode: GameProxy!.gameCode,
                     state: {
                         game: GameProxy!.gameState,
                         discussion: GameProxy!.discussionState
