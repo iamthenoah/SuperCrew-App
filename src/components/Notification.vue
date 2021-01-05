@@ -24,7 +24,7 @@
         mounted() {
             setTimeout(() => {
                 if (this.show) this.emitCloseNotification();
-            }, this.$props.duration);
+            }, Math.min(this.$props.duration as number, 3000));
         },
         computed: {
             setColor: function(): string {

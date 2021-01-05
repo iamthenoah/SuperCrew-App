@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div class="app-name">SuperCrew</div>
+        <div id="app-name">SuperCrew</div>
         <div class="titlebar-controls">
             <div @click="minimize" class="titlebar-minimize">
                 <svg x="0px" y="0px" viewBox="0 0 10 1"><rect fill="#000000" width="10" height="1"></rect></svg>
@@ -39,16 +39,15 @@
         z-index: 1000;
     }
     
-    .app-name {
+    #app-name {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
         margin-left: 7.5px;
         width: auto;
         color: $lighter;
-        font-size: 13px;
-        text-transform: uppercase;
-        font-family: 'Roboto';
+        font-size: 14px;
+        font-family: 'Uni Sans';
     }
 
     .titlebar-controls {

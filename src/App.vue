@@ -53,8 +53,10 @@
 			});
 
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
-				if (message) this.notification = { message, type, duration } as Notification;
-				this.globalDisable = false;
+				setTimeout(() => {
+					if (message) this.notification = { message, type, duration } as Notification;
+					this.globalDisable = false;
+				}, 1000);
 			});
 		},
 		methods: {
@@ -70,8 +72,15 @@
 </script>
 
 <style lang="scss">
+
 	@import './src/assets/styles/variables.scss';
 	@import './src/assets/styles/default.scss';
 	@import './src/assets/styles/main.scss';
 	@import './src/assets/styles/font.scss';
+
+	@font-face {
+		font-family: 'Uni Sans';
+		src: url('./assets/fonts/uni-sans.heavy-caps.woff');
+	}
+
 </style>

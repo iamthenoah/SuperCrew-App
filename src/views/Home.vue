@@ -2,12 +2,11 @@
 	<div>
 		<button class="btn-danger large" @click="shutdownProxy">shutdown proxy</button>
 		<section v-if="GameData">
-			<pre>{{ GameData.code }}</pre>
+			<div id="game-code"><p>{{ GameData.code }}</p></div>
 			<p>Players:</p>
 			<div v-bind:key="player.id" v-for="player in GameData.players">
-				<PlayerAvatar v-bind:player="player" />
+				<PlayerAvatar :player="player" />
 			</div>
-			<PlayerAvatar v-bind:player="{ colorId: 6, hatId: 22, petId: 0, skinId: 0 }" />
 		</section>
 	</div>
 </template>
