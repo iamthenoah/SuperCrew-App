@@ -17,7 +17,7 @@
 	import Notification from '@/components/Notification.vue';
 	import ControlOptions from '@/components/ControlOptions.vue';
 	
-	import { NotificationType } from '@/common/enums/NotificationType';
+	import { NotificationType } from '@/common/NotificationType';
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 
@@ -53,10 +53,8 @@
 			});
 
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
-				setTimeout(() => {
-					if (message) this.notification = { message, type, duration } as Notification;
-					this.globalDisable = false;
-				}, 1000);
+				if (message) this.notification = { message, type, duration } as Notification;
+				this.globalDisable = false;
 			});
 		},
 		methods: {

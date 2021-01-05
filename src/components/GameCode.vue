@@ -1,5 +1,5 @@
 <template>
-	<input @mouseenter="revealLobbyCode" @mouseleave="hideLobbyCode" @click="copyLobbyCode" class="btn large" id="game-code" ref="input" :value="lobbyCode">
+	<input disabled @mouseenter="revealLobbyCode" @mouseleave="hideLobbyCode" @click="copyLobbyCode" class="btn large" id="game-code" ref="input" :value="lobbyCode">
 </template>
 
 <script lang="ts">

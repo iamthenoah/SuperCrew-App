@@ -5,7 +5,14 @@
 			<GameCode :gameCode="GameData.lobbyCode" />
 			<p>Players:</p>
 			<div v-bind:key="player.id" v-for="player in GameData.players">
-				<PlayerAvatar :player="player" />
+				<PlayerAvatarProfile class="resize-avatar" :avatar="{
+					colorId: player.appearance.colorId,
+					skinId: player.appearance.skinId,
+					hatId: player.appearance.hatId,
+					ghost: player.properties.isDead,
+					impostor: player.properties.isImpostor,
+					name: player.name
+				}" />
 			</div>
 		</section>
 	</div>
@@ -17,12 +24,12 @@
 	const { ipcRenderer } = window.require('electron');
 	import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 	import GameCode from '@/components/GameCode.vue';
-	import PlayerAvatar from '@/components/PlayerAvatar.vue';
+	import PlayerAvatarProfile from '@/components/PlayerAvatarProfile.vue';
 
     export default defineComponent({
 		emits: ['submit'],
 		components: {
-			PlayerAvatar,
+			PlayerAvatarProfile,
 			GameCode
 		},
 		data() {
@@ -50,5 +57,8 @@
 
 	@import './src/assets/styles/variables.scss';
 
-
+	.resize-avatar {
+		position: relative;
+		height: 100px;
+	}
 </style>

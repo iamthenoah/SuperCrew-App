@@ -24,11 +24,11 @@
         mounted() {
             setTimeout(() => {
                 if (this.show) this.emitCloseNotification();
-            }, Math.min(this.$props.duration as number, 3000));
+            }, Math.min(this.duration as number, 3000));
         },
         computed: {
             setColor: function(): string {
-                if (this.$props.type) return ['success', 'warning', 'error'].indexOf(this.$props.type) > -1 ? this.$props.type : 'error';
+                if (this.type) return ['success', 'warning', 'error'].indexOf(this.type) > -1 ? this.type : 'error';
                 else return 'error';
             },
         },

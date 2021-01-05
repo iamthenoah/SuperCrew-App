@@ -1,7 +1,7 @@
 'use strict'
 
 import { ipcMain, IpcMainEvent } from 'electron';
-import { NotificationType } from '@/common/enums/NotificationType';
+import { NotificationType } from '@/common/NotificationType';
 import { spawn } from 'cross-spawn';
 import path from 'path';
 import WinRegistry from 'winreg';

@@ -7,8 +7,8 @@
 			<p>{{ RandomGameTip.tip }}</p>
 		</section>
 		<section>
+			<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
 		</section>
-		<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
 	</div>
 </template>
 
