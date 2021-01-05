@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<section v-if="false" class="space-bottom">
+		<section class="space-bottom">
 			<h1><strong>PRO-TIP</strong></h1>
 			<hr>
 			<p><b>{{ RandomGameTip.role }}</b></p>

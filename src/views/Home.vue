@@ -13,9 +13,6 @@
 
 <script lang="ts">
 
-/*
-*/
-
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 	import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
