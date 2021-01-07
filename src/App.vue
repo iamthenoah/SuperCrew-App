@@ -44,14 +44,10 @@
 		mounted() {
 			ipcRenderer.send('check-game-opened');
 			ipcRenderer.on('game-opened', (_: Electron.IpcRendererEvent, opened: boolean) => {
-				if (opened) {
-					ipcRenderer.send('run-game-proxy');
-					this.$router.push('/home'); 
-				} else {
-					this.$router.push('/');
-				}
+				if (opened) ipcRenderer.send('run-game-proxy');
+				this.$router.push(opened ? '/home' : '/');
+				console.log(opened);
 			});
-
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
 				if (message) this.notification = { message, type, duration } as Notification;
 				this.globalDisable = false;
