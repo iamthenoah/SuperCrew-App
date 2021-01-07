@@ -51,7 +51,6 @@
 				if (message) this.notification = { message, type, duration } as Notification;
 				this.globalSubmit(false);
 			});
-			ipcRenderer.on('prevent-input', () => this.globalSubmit(true));
 		},
 		methods: {
 			globalSubmit: function(submit: boolean) {

@@ -56,8 +56,6 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
 
 async function runGameProxy(e: IpcMainEvent) {
     try {
-        e.reply('prevent-input');
-
         const version: string | null = Util.getCurrentVersion();
         const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error.');
