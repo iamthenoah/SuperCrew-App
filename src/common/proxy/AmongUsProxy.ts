@@ -6,6 +6,8 @@ import { IPlayerBuffer } from './interfaces/IPlayerBuffer';
 import { GameState } from './enums/GameState';
 import { DiscussionState } from './enums/DiscussionState';
 
+import { NotificationType } from '@/common/NotificationType';
+
 import Struct from 'structron';
 import MemoryReader from './MemoryReader';
 
@@ -24,7 +26,7 @@ export default class AmongUsProxy {
 
     public gameCode: string | null = null;
     public players: Array<IPlayer>;
-    public inGame: Boolean;
+    public inGame: boolean;
 
     constructor(renderer: (event: string, ...args: unknown[]) => void, offsets: IOffsets) {
         this.renderer = renderer;
@@ -48,6 +50,7 @@ export default class AmongUsProxy {
         if (this.previousGameState != processRunState) {
             this.previousGameState = processRunState;
             this.renderer('game-opened', processRunState);
+            if (processRunState) this.renderer('notify', `Among Us running...`, NotificationType.SUCCESS)
         }
         
         if (processRunState) {

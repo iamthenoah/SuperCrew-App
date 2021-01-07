@@ -45,12 +45,13 @@
 			ipcRenderer.send('check-game-opened');
 			ipcRenderer.on('game-opened', (_: Electron.IpcRendererEvent, opened: boolean) => {
 				this.$router.push(opened ? '/playing' : '/');
-				this.disableWindow = false;
+				this.globalSubmit(false);
 			});
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
 				if (message) this.notification = { message, type, duration } as Notification;
-				this.disableWindow = false;
+				this.globalSubmit(false);
 			});
+			ipcRenderer.on('prevent-input', () => this.globalSubmit(true));
 		},
 		methods: {
 			globalSubmit: function(submit: boolean) {

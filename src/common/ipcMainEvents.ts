@@ -13,16 +13,13 @@ import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-
-ipcMain.on('start', () => {
-
-});
-
 ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
     try {
         const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
-        if (!opened) e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
-        else runGameProxy(e);
+        if (!opened) {
+            e.reply('game-opened', false);
+            e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
+        } else runGameProxy(e);
     } 
     catch (error) {
         e.reply('notify', error.message);
@@ -59,6 +56,8 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
 
 async function runGameProxy(e: IpcMainEvent) {
     try {
+        e.reply('prevent-input');
+
         const version: string | null = Util.getCurrentVersion();
         const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error.');
@@ -81,8 +80,6 @@ async function runGameProxy(e: IpcMainEvent) {
         };
 
         if (GameProxy && runProxy) tick(); 
-
-        e.reply('notify', `Among Us running on version v${version}...`, NotificationType.SUCCESS);
     }
     catch (error) {
         e.reply('notify', error.message);
@@ -92,5 +89,3 @@ async function runGameProxy(e: IpcMainEvent) {
 
 let runProxy: boolean = true;
 export const closeProxy = () => runProxy = true;
-ipcMain.on('shutdown-game-proxy', closeProxy);
-ipcMain.on('run-game-proxy', runGameProxy);
