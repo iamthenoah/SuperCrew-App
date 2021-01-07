@@ -25,6 +25,7 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
+    "websocket": "^1.0.33",
     "winreg": "^1.2.4"
   },
   "devDependencies": {
