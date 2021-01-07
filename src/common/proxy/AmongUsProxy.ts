@@ -11,6 +11,8 @@ import MemoryReader from './MemoryReader';
 
 export default class AmongUsProxy {
 
+    private renderer: (event: string, ...args: unknown[]) => void;
+
     private Memory: MemoryReader;
     private PlayerStruct: Struct;
     private offsets: IOffsets;
@@ -18,17 +20,21 @@ export default class AmongUsProxy {
     public discussionState: DiscussionState = DiscussionState.NONE;
     public gameState: GameState = GameState.UNKNOWN;
     
+    private previousGameState: boolean | null = null;
+
     public gameCode: string | null = null;
     public players: Array<IPlayer>;
     public inGame: Boolean;
 
-    constructor(offsets: IOffsets) {
+    constructor(renderer: (event: string, ...args: unknown[]) => void, offsets: IOffsets) {
+        this.renderer = renderer;
+
         this.Memory = new MemoryReader();
 
         this.players = [];
         this.offsets = offsets;
         this.inGame = false;
-        
+
         this.PlayerStruct = new Struct();
         for (const member of offsets.player.struct)
             this.PlayerStruct = (member.type === 'SKIP' && member.skip) 
@@ -37,17 +43,23 @@ export default class AmongUsProxy {
     }
 
     public operate(): void {
-        console.clear();
-        if (this.Memory.checkProcess()) {
+        const processRunState = this.Memory.checkProcess();
 
-            let meetingHud = this.Memory.read<number>(MemDT.POINTER, this.offsets.meetingHud);
-            let meetingHud_cachePtr = meetingHud === 0 ? 0 : this.Memory.read<number>(MemDT.UINT32, this.offsets.meetingHudCachePtr, meetingHud);
-            let meetingHudState = meetingHud_cachePtr === 0 ? 4 : this.Memory.read(MemDT.INT, this.offsets.meetingHudState, meetingHud, 4);
+        if (this.previousGameState != processRunState) {
+            this.previousGameState = processRunState;
+            this.renderer('game-opened', processRunState);
+        }
+        
+        if (processRunState) {
 
-            let gameStateCode = this.Memory.read<number>(MemDT.INT, this.offsets.gameState);
-            let allPlayersPtr = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayersPtr) & 0xffffffff;
-            let allPlayers = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayers, allPlayersPtr);
-            let playerCount: number = gameStateCode !== 0 ? this.Memory.read(MemDT.INT as const, this.offsets.playerCount, allPlayersPtr) : 0;
+            const meetingHud = this.Memory.read<number>(MemDT.POINTER, this.offsets.meetingHud);
+            const meetingHud_cachePtr = meetingHud === 0 ? 0 : this.Memory.read<number>(MemDT.UINT32, this.offsets.meetingHudCachePtr, meetingHud);
+            const meetingHudState = meetingHud_cachePtr === 0 ? 4 : this.Memory.read(MemDT.INT, this.offsets.meetingHudState, meetingHud, 4);
+
+            const gameStateCode = this.Memory.read<number>(MemDT.INT, this.offsets.gameState);
+            const allPlayersPtr = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayersPtr) & 0xffffffff;
+            const allPlayers = this.Memory.read<number>(MemDT.PTR, this.offsets.allPlayers, allPlayersPtr);
+            const playerCount: number = gameStateCode !== 0 ? this.Memory.read(MemDT.INT as const, this.offsets.playerCount, allPlayersPtr) : 0;
 
             this.discussionState = DiscussionState[DiscussionState[meetingHudState]];
             this.gameState = this.discussionState == 4 
@@ -56,14 +68,14 @@ export default class AmongUsProxy {
             this.inGame = (this.gameState != GameState.MENU && this.gameState != GameState.UNKNOWN);
             this.gameCode = this.inGame ? this.getGameCode() : this.gameCode;
 
-            let playerAddrPtr = allPlayers + this.offsets.playerAddrPtr;
+            var playerAddrPtr = allPlayers + this.offsets.playerAddrPtr;
             var impostors = 0, crewmates = 0;
             this.players = [];
 
             for (let i = 0; i < playerCount; i++, playerAddrPtr += 4) {
-                let { address, last } = this.Memory.offset(playerAddrPtr, this.offsets.player.offsets);
-                let playerData: Buffer = this.Memory.fromBuffer(address + last, this.offsets.player.bufferLength);
-                let player = this.parsePlayer(address + last, playerData);
+                const { address, last } = this.Memory.offset(playerAddrPtr, this.offsets.player.offsets);
+                const playerData: Buffer = this.Memory.fromBuffer(address + last, this.offsets.player.bufferLength);
+                const player = this.parsePlayer(address + last, playerData);
                 player.properties.isImpostor ? impostors++ : crewmates++;
                 this.players.push(player);
             }

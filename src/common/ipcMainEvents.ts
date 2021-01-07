@@ -13,18 +13,22 @@ import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+
+ipcMain.on('start', () => {
+
+});
+
 ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
     try {
         const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
         if (!opened) e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
-        else e.reply('notify', 'Among Us is running...', NotificationType.SUCCESS);
-        e.reply('game-opened', opened);
-    }
+        else runGameProxy(e);
+    } 
     catch (error) {
-        e.reply('game-opened', false);
         e.reply('notify', error.message);
     }
 });
+
 
 ipcMain.on('open-game', (e: IpcMainEvent) => {
     try {
@@ -44,55 +48,49 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
             );
 
             process.on('error', () => { throw new Error('Could not open Among Us.'); });
-            e.reply('game-opened', true);
-            e.reply('notify', 'Game is now running...', NotificationType.SUCCESS);
+            runGameProxy(e);
         });
-    }
+    } 
     catch (error) {
-        e.reply('game-opened', false);
         e.reply('notify', error.message + ' Try opening the game manually.');
     }
 });
 
-let closeProxy: boolean = false;
-export const CloseProxy = () => closeProxy = true;
 
-ipcMain.on('shutdown-game-proxy', () => closeProxy = true);
-
-ipcMain.on('run-game-proxy', async (e: IpcMainEvent) => {
+async function runGameProxy(e: IpcMainEvent) {
     try {
         const version: string | null = Util.getCurrentVersion();
         const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
-        if (!offsets) throw new Error('Could not load game offests... Server ran into an error');
-        let GameProxy: AmongUsProxy | null = new AmongUsProxy(offsets as IOffsets);
-        if (!GameProxy) throw new Error('Error caused the game proxy to fail...');
+        if (!offsets) throw new Error('Could not load game offests... Server ran into an error.');
+        let GameProxy: AmongUsProxy | null = new AmongUsProxy(e.reply as (event: string, ...args: unknown[]) => void, offsets as IOffsets);
         
         const tick = () => {
-            if (closeProxy && GameProxy) {
-                GameProxy = null;
-                e.reply('notify', 'App has now been disabled for Among Us.', NotificationType.WARNING);
-                return;
-            } else {
-                GameProxy!.operate();
-                const data = {
-                    players: GameProxy!.players,
-                    lobbyCode: GameProxy!.gameCode,
-                    state: {
-                        game: GameProxy!.gameState,
-                        discussion: GameProxy!.discussionState
-                    }
-                } as AmongUsGameData;
-                e.reply('game-data', data);
-                setTimeout(tick, isDevelopment ? 1000 : 50);
-            }
-        };
-        
-        if (GameProxy && !closeProxy) tick();
+            GameProxy!.operate();
+            
+            const data = {
+                players: GameProxy!.players,
+                lobbyCode: GameProxy!.gameCode,
+                state: {
+                    game: GameProxy!.gameState,
+                    discussion: GameProxy!.discussionState
+                }
+            } as AmongUsGameData;
 
-        e.reply('notify', `App running with Game version ${version}...`, NotificationType.SUCCESS);
+            e.reply('game-data', data);
+            setTimeout(tick, isDevelopment ? 1000 : 50);
+        };
+
+        if (GameProxy && runProxy) tick(); 
+
+        e.reply('notify', `Among Us running on version v${version}...`, NotificationType.SUCCESS);
     }
     catch (error) {
-        e.reply('game-opened', false);
         e.reply('notify', error.message);
     }
-});
+}
+
+
+let runProxy: boolean = true;
+export const closeProxy = () => runProxy = true;
+ipcMain.on('shutdown-game-proxy', closeProxy);
+ipcMain.on('run-game-proxy', runGameProxy);

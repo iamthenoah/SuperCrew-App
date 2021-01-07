@@ -1,19 +1,13 @@
 <template>
 	<div>
-		<button v-if="proxy" class="btn-danger large" @click="shutdownProxy">shutdown proxy</button>
-		<section v-if="GameData">
-			<GameCode :gameCode="GameData.lobbyCode" />
-			<p>Players:</p>
-			<div v-bind:key="player.id" v-for="player in GameData.players">
-				<PlayerAvatarProfile class="resize-avatar" :avatar="{
-					colorId: player.appearance.colorId,
-					skinId: player.appearance.skinId,
-					hatId: player.appearance.hatId,
-					ghost: player.properties.isDead,
-					impostor: player.properties.isImpostor,
-					name: player.name
-				}" />
-			</div>
+		<section class="space-bottom">
+			<h1><strong>PROTIP</strong></h1>
+			<hr>
+			<p><b>{{ RandomGameTip.role }}</b></p>
+			<p>{{ RandomGameTip.tip }}</p>
+		</section>
+		<section>
+			<button @click="openAmongUs" class="btn center-h large">Open Game</button>
 		</section>
 	</div>
 </template>
@@ -21,45 +15,34 @@
 <script lang="ts">
 
 	import { defineComponent } from 'vue';
+	import GameTips from '@/assets/GameTips.json';
 	const { ipcRenderer } = window.require('electron');
-	import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
-	import GameCode from '@/components/GameCode.vue';
-	import PlayerAvatarProfile from '@/components/PlayerAvatarProfile.vue';
+
+	export interface GameTip {
+	    role: string;
+    	tip: string;
+	}
 
     export default defineComponent({
 		emits: ['submit'],
-		components: {
-			PlayerAvatarProfile,
-			GameCode
-		},
-		data() {
-			const GameData: AmongUsGameData | null = null;
-			return {
-				GameData,
-				proxy: true
-			}
-		},
-		mounted() {
-			ipcRenderer.on('game-data', (_: Electron.IpcRendererEvent, data: AmongUsGameData | null) => this.GameData = data as null);
-		},
 		methods: {
-			shutdownProxy: function () {
-				this.$emit('submit');
-				ipcRenderer.send('shutdown-game-proxy');
-				this.proxy = false;
+			openAmongUs: function() {
+				this.$emit('submit', true);
+				ipcRenderer.send('open-game');
+			},
+		},
+		computed: {
+			RandomGameTip: (): GameTip => {
+				const { role, tip } = GameTips[Math.floor(Math.random() * GameTips.length)] as GameTip
+				return { role: role.charAt(0).toUpperCase() + role.slice(1), tip } as GameTip;
 			}
 		},
-	});
+    });
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 	@import './src/assets/styles/variables.scss';
 
-	.resize-avatar {
-		position: relative;
-		height: 100px;
-		overflow: hidden;
-	}
 </style>

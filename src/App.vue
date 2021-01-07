@@ -1,8 +1,8 @@
 <template> 
 	<WindowHeader />
 	<main>
-		<LoadingBar v-if="globalDisable" />
-		<div class="content noselect" :class="{ 'disabled' : globalDisable }">
+		<LoadingBar v-if="disableWindow" />
+		<div class="content noselect" :class="{ 'disabled' : disableWindow }">
 			<router-view v-on:submit="globalSubmit($event)" />
 		</div>
 	</main>
@@ -37,25 +37,24 @@
 		data() {
 			const notification: Notification = { message: '', type: NotificationType.ERROR, duration: 0 };
 			return {
-				globalDisable: false,
+				disableWindow: true,
 				notification,
 			}
 		},
 		mounted() {
 			ipcRenderer.send('check-game-opened');
 			ipcRenderer.on('game-opened', (_: Electron.IpcRendererEvent, opened: boolean) => {
-				if (opened) ipcRenderer.send('run-game-proxy');
-				this.$router.push(opened ? '/home' : '/');
-				console.log(opened);
+				this.$router.push(opened ? '/playing' : '/');
+				this.disableWindow = false;
 			});
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
 				if (message) this.notification = { message, type, duration } as Notification;
-				this.globalDisable = false;
+				this.disableWindow = false;
 			});
 		},
 		methods: {
 			globalSubmit: function(submit: boolean) {
-				this.globalDisable = submit;
+				this.disableWindow = submit;
 			},
 			closeNotification: function() {
 				this.notification = { message: '', type: NotificationType.ERROR, duration: 0 };
