@@ -15,13 +15,12 @@ export default class MemoryReader {
 
     public checkProcess(): boolean {
         try {
-            this.amongUs = openProcess("Among Us.exe");
-            this.gameAssembly = findModule("GameAssembly.dll", this.amongUs.th32ProcessID);
+            this.amongUs = openProcess('Among Us.exe');
+            this.gameAssembly = findModule('GameAssembly.dll', this.amongUs.th32ProcessID);
             return true;
-        }
-        catch(e) {
+        } catch (e) {
             this.amongUs = null;
-            this.gameAssembly = null;
+            this.gameAssembly = null;            
             return false;
         }
     }

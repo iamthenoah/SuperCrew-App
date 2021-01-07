@@ -3,8 +3,9 @@
 import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
-import { CloseProxy } from './ipcMainEvents';
-import './ipcMainEvents';
+import { closeProxy } from './common/ipcMainEvents';
+import './common/ipcMainEvents';
+//import './common/io';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -39,7 +40,7 @@ async function createWindow() {
 
 
 app.on('window-all-closed', () => {
-	CloseProxy();
+	closeProxy();
 	app.quit();
 });
 
