@@ -60,5 +60,6 @@
 	.resize-avatar {
 		position: relative;
 		height: 100px;
+		overflow: hidden;
 	}
 </style>

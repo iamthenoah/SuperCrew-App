@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<section class="space-bottom">
-			<h1><strong>PRO-TIP</strong></h1>
+			<h1><strong>PROTIP</strong></h1>
 			<hr>
 			<p><b>{{ RandomGameTip.role }}</b></p>
 			<p>{{ RandomGameTip.tip }}</p>
 		</section>
 		<section>
-			<button @click="openAmongUs" class="space-top btn-special center-h large">Open Game</button>
+			<button @click="openAmongUs" class="btn-special center-h large">Open Game</button>
 		</section>
 	</div>
 </template>
