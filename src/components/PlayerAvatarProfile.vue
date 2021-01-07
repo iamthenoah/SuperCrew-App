@@ -1,9 +1,9 @@
 <template>
     <div class="noselect">
-        <div class="avatar-container">
+        <div class="avatar-container noselect">
             <img class="body" :src="Body">
-            <img v-if="hasHat" :class="{ 'back': isHatInBack }" class="hat" :style="{ top: hatOffset + 'px' }" :src="Hat">
-            <img v-if="hasSkin" class="skin" :src="Skin">
+            <img v-if="hasHat && !avatar.ghost" :class="{ 'back': isHatInBack }" class="hat" :style="{ top: hatOffset + 'px' }" :src="Hat">
+            <img v-if="hasSkin && !avatar.ghost" class="skin" :src="Skin">
         </div>
     </div>
 </template>
@@ -12,20 +12,18 @@
 
     import { defineComponent } from 'vue';
     import { PlayerAvatar } from '@/common/PlayerAvatar';
+
     const avatar: PlayerAvatar | null = null;
 
     export default defineComponent({
-        props: {
-            avatar
-        },
+        props: { avatar },
         computed: {
             isHatInBack: function(): boolean { return new Set([ 4, 6, 15, 29, 39, 42, 85 ]).has(this.avatar.hatId) },
             hasHat: function(): boolean { return this.avatar.hatId !== 0 },
             hasSkin: function(): boolean { return this.avatar.skinId !== 0 },
             Body: function() {
                 const colorId: number = this.avatar.colorId;
-                console.log()
-                const state: string = this.avatar.isDead ? 'dead' : 'alive'; 
+                const state: string = this.avatar.ghost ? 'dead' : 'alive'; 
                 return require(`@/assets/static/players/${state}/${colorId}.png`);
             },
             Hat: function() {
