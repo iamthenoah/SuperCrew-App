@@ -56,6 +56,7 @@
         left: 0;
         height: 50px;
         background: $darker;
+        z-index: 1000;
     }
 
     ul {

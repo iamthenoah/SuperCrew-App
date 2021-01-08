@@ -1,3 +1,7 @@
+#app {
+    height: 100%;
+}
+
 .content {
     margin: 10px 25px;
 }
@@ -19,7 +23,7 @@
     width: auto;
     height: 33px;
     padding: 5px 20px;
-    border-radius: 2px;
+    border-radius: 3px;
     background: none;
     text-align: center;
     line-height: 21px;
@@ -218,13 +222,11 @@
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 3px;
-    background: rgba($darker, 0.5);
+    background: $dark;
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background: $darker; 
+    background: $darker;
 }
 
 .standalone-icon > img {
