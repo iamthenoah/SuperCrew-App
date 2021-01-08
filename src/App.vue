@@ -6,7 +6,13 @@
 			<router-view v-on:submit="globalSubmit($event)" />
 		</div>
 	</main>
-	<Notification v-if="notification.duration != 0" v-on:close-notification="closeNotification" :duration="notification.duration" :message="notification.message" :type="notification.type"/>
+	<Notification 
+		v-if="notification.duration != 0"
+		v-on:close-notification="closeNotification"
+		:duration="notification.duration"
+		:message="notification.message"
+		:type="notification.type"
+	/>
 	<ControlOptions />
 </template>
 
