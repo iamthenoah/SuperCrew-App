@@ -35,7 +35,7 @@
         methods: {
             emitCloseNotification: function() {
                 this.show = false;
-                setTimeout(() => this.$emit('close-notification'), 250);
+                setTimeout(() => this.$emit('onNotificationClosed'), 250);
             }
         },
     });

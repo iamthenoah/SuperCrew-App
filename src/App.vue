@@ -8,7 +8,7 @@
 	</main>
 	<Notification 
 		v-if="notification.duration != 0"
-		v-on:close-notification="closeNotification"
+		@onNotificationClosed="closeNotification"
 		:duration="notification.duration"
 		:message="notification.message"
 		:type="notification.type"
