@@ -84,9 +84,11 @@ section {
 }
 
 main {
-    position: relative;
-    padding-top: 25px;
-    height: 100%;
+    position: absolute;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    height: calc(100% - 75px);
+    overflow: auto;
 }
 
 header {

@@ -51,7 +51,7 @@
         position: absolute;
         font-size: 12px;
         width: 100%;
-        bottom: 50px;
+        bottom: 0;
         left: 0;
         height: auto;
         max-height: 50px;
