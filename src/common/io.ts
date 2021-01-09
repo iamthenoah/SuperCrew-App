@@ -1,8 +1,8 @@
 import { io } from 'socket.io-client';
-const socket = io('http://192.168.0.34:3000/');
+const socket = io('https://supercrew.herokuapp.com');
 
 socket.on('connect', () => {
-    console.log('connected to Mac');
+    console.log('connected to server');
 
     socket.on('clientEvent', data => {
         console.log('message from the server:', data);
