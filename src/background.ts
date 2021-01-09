@@ -5,7 +5,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { closeProxy } from './common/ipcMainEvents';
 import './common/ipcMainEvents';
-//import './common/io';
+import './common/io';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
