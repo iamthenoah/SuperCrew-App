@@ -11,6 +11,8 @@ import Util from '@/common/proxy/Util';
 import { IOffsets } from '@/common/proxy/interfaces/IOffsets';
 import { AmongUsGameData } from '@/common/proxy/AmongUsGameData';
 
+const Store = require('electron-store');
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
@@ -54,11 +56,24 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
 });
 
 
+let runProxy: boolean = true;
+export const closeProxy = () => runProxy = true;
+
+
 async function runGameProxy(e: IpcMainEvent) {
     try {
-        const version: string | null = Util.getCurrentVersion();
-        const offsets: IOffsets | null = await Util.getOffsetSchema(version as string);
+        var offsets: IOffsets | null = null;
+
+        if (Store.has('offsets')) {
+            offsets = Store.get('offsets') as IOffsets;
+        } else {
+            const version: string | null = Util.getCurrentVersion();
+            offsets = await Util.getOffsetSchema(version as string);
+            Store.set('offsets', offsets);
+        }
+
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error.');
+        
         let GameProxy: AmongUsProxy | null = new AmongUsProxy(e.reply as (event: string, ...args: unknown[]) => void, offsets as IOffsets);
         
         const tick = () => {
@@ -85,5 +100,10 @@ async function runGameProxy(e: IpcMainEvent) {
 }
 
 
-let runProxy: boolean = true;
-export const closeProxy = () => runProxy = true;
+ipcMain.on('set', (_: IpcMainEvent) => Store.setSync('server', { url: 'https://dripdrip.herokuapp.com/' }));
+ipcMain.on('get', (e: IpcMainEvent) => e.reply('notify', Store.getSync('server')!['url'], NotificationType.SUCCESS));
+
+
+ipcMain.on('load-Store', (e: IpcMainEvent) => {
+    
+});

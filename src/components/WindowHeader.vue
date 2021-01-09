@@ -45,7 +45,7 @@
         transform: translateY(-50%);
         margin-left: 7.5px;
         width: auto;
-        color: $lighter;
+        color: rgba($dim, 0.5);
         font-size: 14px;
         font-family: 'Uni Sans';
     }
@@ -95,7 +95,7 @@
 
     svg polygon,
     svg rect {
-        fill: $lighter;
+        fill: white;
     }
 
 </style>

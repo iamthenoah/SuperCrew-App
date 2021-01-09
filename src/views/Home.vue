@@ -1,15 +1,13 @@
 <template>
-	<div>
-		<section class="space-bottom">
-			<h1><strong>PROTIP</strong></h1>
-			<hr>
-			<p><b>{{ RandomGameTip.role }}</b></p>
-			<p>{{ RandomGameTip.tip }}</p>
-		</section>
-		<section>
-			<button @click="openAmongUs" class="btn center-h large">Open Game</button>
-		</section>
-	</div>
+	<section class="space-bottom">
+		<h1>PROTIP</h1>
+		<hr>
+		<p><b>{{ RandomGameTip.role }}</b></p>
+		<p>{{ RandomGameTip.tip }}</p>
+	</section>
+	<section>
+		<button @click="openAmongUs" class="btn center-h large">Open Game</button>
+	</section>
 </template>
 
 <script lang="ts">

@@ -14,9 +14,7 @@
                 </div>
             </ol>
             <ol>
-                <router-link to="/preferences">
-                    <div class="standalone-icon"><img src="@/assets/icons/gear.png"></div>
-                </router-link>
+                <div :class="{ 'toggled': settings}" class="standalone-icon" @click="toggleSettings()"><img src="@/assets/icons/gear.png"></div>
             </ol>
         </ul>
     </div>
@@ -30,7 +28,8 @@
         data() {
             return {
                 muted: false,
-                deafened: false
+                deafened: false,
+                settings: false
             }
         },
         methods: {
@@ -39,6 +38,10 @@
             },
             deafen: function() {
                 this.deafened = !this.deafened;
+            },
+            toggleSettings: function() {
+                this.settings = ! this.settings;
+                this.$router.push(this.settings ? '/preferences' : '/');
             }
         },
     });
@@ -71,6 +74,10 @@
     ol {
         margin: 0 2px;
         float: left;
+    }
+
+    .toggled {
+        background: rgb(30, 30, 30);
     }
 
 </style>

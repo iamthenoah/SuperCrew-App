@@ -8,6 +8,9 @@
             <div class="option-spacer">
                 <div class="spacer-text">{{ choiceDescription }}</div>
             </div>
+            <div v-if="canHaveNoneMessage" class="option" @click="setCurrentSelectedOption(null)">
+                <p>{{ canHaveNoneMessage }}</p>
+            </div>
 			<div class="option" v-for="option in options" :key="option.key" @click="setCurrentSelectedOption(option)">
                 <p>{{ option.value }}</p>
             </div>
@@ -36,6 +39,13 @@
                     { key: 3, value: 'Headphone 3' },
                     { key: 3, value: 'Headphone 3' },
                     { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
+                    { key: 4, value: 'Headphone 4' },
                     { key: 5, value: 'Headphone 5' }
                 ]
             }
@@ -44,7 +54,8 @@
             selectedOption: String,
             choiceDescription: String,
             noneSelectedText: String,
-            requireSelected: Boolean
+            requireSelected: Boolean,
+            canHaveNoneMessage: String 
         },
         mounted() {
             this.selected = this.selectedOption as string;
@@ -52,7 +63,7 @@
         methods: {
             setCurrentSelectedOption: function(option) {
                 this.$emit('onSelectionChanged', option);
-                this.selected = option.value;
+                this.selected = option ? option.value : null;
             },
             shouldToggleDropdown: function() {
                 this.isExpanded = !this.isExpanded;
@@ -67,6 +78,7 @@
 	@import './src/assets/styles/variables.scss';
 
     .dropdown {
+        margin: 10px 0;
         cursor: pointer;
         position: relative;
         user-select: none;
@@ -77,27 +89,27 @@
         margin-bottom: 15px;
         font-size: 15px;
         font-family: 'Uni Sans', cursive;
-        z-index: 10000;
     }
 
     .text {
         position: absolute;
-        line-height: 29px;
+        line-height: 27px;
     }
 
     .option-spacer {
         cursor: default;
         position: relative;
-        width: 100%;
         background: $darker;
-        padding: 15px 0;
+        padding-left: 4px;
+        padding-bottom: 15px;
+        padding-top: 15px;
         height: auto;
     }
 
     .spacer-text {
         margin-left: 6px;
         font-size: 12px;
-        color: $lighter;
+        color: $dim;
     }
 
     .label-container {
@@ -109,26 +121,29 @@
     }
 
     .label-container p {
-        padding-left: 6px;
+        padding-left: 10px;
     }
 
     .options {
         cursor: pointer;
         position: relative;
         overflow: auto;
-        max-height: 150px;
+        max-height: 160px;
+        z-index: 1000;
     }
 
     .option {
         position: relative;
-        padding-left: 6px;
+        padding-left: 10px;
         height: 35px;
         background: $darker;
         border: transparent solid 1px;
         transition: all 100ms ease-in;
     }
 
-    .option:hover p {
+    .option:hover p,
+    .up-arrow:hover,
+    .down-arrow:hover {
         opacity: 0.75;
     }
 
@@ -136,14 +151,6 @@
         border-color: $theme;
     }
     
-    .option span {
-        position: relative;
-        width: 100%;
-        z-index: 100;
-        height: 10px;
-        background: $lighter;
-    }
-
     .up-arrow,
     .down-arrow {
         position: absolute;

@@ -7,9 +7,6 @@ html {
     box-sizing: border-box;
 }
 
-
-*::before,
-*::after,
 * {
     margin: 0;
     padding: 0;
@@ -40,13 +37,13 @@ input {
     position: relative;
     user-select: none;
     left: 0;
-    width: calc(100% - 6px);
+    width: calc(100% - 10px);
     height: 33px;
-    padding-left: 6px;
+    padding-left: 10px;
     background: $darker;
     border-radius: 3px;
     border: $dark solid 1px;
-    margin-bottom: 15px;
+    margin: 10px 0;
 }
 
 input:focus {
@@ -74,15 +71,15 @@ li {
 }
 
 hr {
-    margin: 15px 0;
+    margin: 10px 0;
     border: none;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.05); 
+    height: 1.5px;
+    background:$lighter; 
 }
 
 section {
     position: relative;
-    padding: 5px 5px;
+    margin: 5px 30px;
     height: 100%;
 }
 
@@ -102,5 +99,20 @@ header {
 }
 
 h1 {
+    font-family: 'Uni Sans', cursive;
     margin: 10px 0;
+}
+
+label {
+    margin-left: 10px;
+    margin-bottom: 10px !important;
+    width: 100%;
+    font-family: 'Verdana' 10px;
+}
+
+h4 {
+    font-size: 13px;
+    font-family: 'Uni Sans', cursive;
+    color: $dim;
+    margin-bottom: 15px;
 }
