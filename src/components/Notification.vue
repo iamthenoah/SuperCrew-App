@@ -1,6 +1,6 @@
 <template>
     <div class="noselect" :class="{ 'fade-in': show, 'fade-out': !show }">
-        <div @click="emitCloseNotification" :class="setColor" id="notification-container">
+        <div @click="emitCloseNotification()" :class="setColor" id="notification-container">
             <p><strong>{{ message }}</strong></p>
         </div>
     </div>
@@ -11,6 +11,7 @@
     import { defineComponent } from 'vue';
 
     export default defineComponent({
+        emits: ['onNotificationClosed'],
         data() {
             return {
                 show: true,
@@ -51,7 +52,7 @@
         position: absolute;
         font-size: 12px;
         width: 100%;
-        bottom: 0;
+        bottom: 50px;
         left: 0;
         height: auto;
         max-height: 50px;

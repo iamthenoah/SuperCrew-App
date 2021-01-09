@@ -77,7 +77,7 @@
     }
 
     .toggled {
-        background: rgb(30, 30, 30);
+        background: $darkest;
     }
 
 </style>

@@ -5,13 +5,15 @@
 		<div class="content noselect" :class="{ 'disabled' : disableWindow }">
 			<router-view v-on:submit="globalSubmit($event)" />
 		</div>
-		<Notification 
-			v-if="notification.duration != 0"
-			@onNotificationClosed="closeNotification"
-			:duration="notification.duration"
-			:message="notification.message"
-			:type="notification.type"
-		/>
+		<div id="notif-container">
+			<Notification 
+				v-if="notification.duration != 0"
+				@onNotificationClosed="closeNotification()"
+				:duration="notification.duration"
+				:message="notification.message"
+				:type="notification.type"
+			/>
+		</div>
 	</main>
 	<ControlOptions />
 </template>
@@ -54,7 +56,7 @@
 				this.globalSubmit(false);
 			});
 			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
-				if (message) this.notification = { message, type, duration: 100000 } as Notification;
+				if (message) this.notification = { message, type, duration } as Notification;
 				this.globalSubmit(false);
 			});
 		},
@@ -82,4 +84,11 @@
 		src: url('./assets/fonts/uni-sans.heavy-caps.woff');
 	}
 
+	#notif-container {
+		position: fixed;
+		bottom: 0;
+		height: auto;
+		width: 100%;
+	}
+	
 </style>
