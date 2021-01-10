@@ -3,7 +3,10 @@
 	<main>
 		<LoadingBar v-if="disableWindow" />
 		<div class="content noselect" :class="{ 'disabled' : disableWindow }">
-			<router-view v-on:submit="globalSubmit($event)" />
+			<router-view 
+				@submit="globalSubmit($event)"
+				@notify="notifyUser($event)"
+			/>
 		</div>
 		<div id="notif-container">
 			<Notification 
@@ -55,10 +58,8 @@
 				this.$router.push(opened ? '/playing' : '/');
 				this.globalSubmit(false);
 			});
-			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) => {
-				if (message) this.notification = { message, type, duration } as Notification;
-				this.globalSubmit(false);
-			});
+			ipcRenderer.on('notify', (_: Electron.IpcRendererEvent, message: string, type = NotificationType.ERROR, duration: number = message.length * 150) =>
+				this.notifyUser(message, type, duration));
 		},
 		methods: {
 			globalSubmit: function(submit: boolean) {
@@ -67,6 +68,10 @@
 			closeNotification: function() {
 				this.notification = { message: '', type: NotificationType.ERROR, duration: 0 };
 			},
+			notifyUser: function(message: string, type = NotificationType.ERROR, duration: number = message.length * 150) {
+				if (message) this.notification = { message, type, duration } as Notification;
+				this.globalSubmit(false);
+			}
 		},
 	});
 

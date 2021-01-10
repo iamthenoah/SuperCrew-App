@@ -12,7 +12,7 @@
                 <p>{{ canHaveNoneMessage }}</p>
             </div>
 			<div class="option" v-for="option in options" :key="option.key" @click="setCurrentSelectedOption(option)">
-                <p>{{ option.value }}</p>
+                <p>{{ option.text }}</p>
             </div>
 		</div>
 
@@ -29,25 +29,6 @@
             return {
                 isExpanded: false,
                 selected: '',
-                options: [
-                    { key: 1, value: 'Headphone 1' },
-                    { key: 2, value: 'Headphone 2' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 3, value: 'Headphone 3' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 4, value: 'Headphone 4' },
-                    { key: 5, value: 'Headphone 5' }
-                ]
             }
         },
         props: {
@@ -55,7 +36,8 @@
             choiceDescription: String,
             noneSelectedText: String,
             requireSelected: Boolean,
-            canHaveNoneMessage: String 
+            canHaveNoneMessage: String,
+            options: Object
         },
         mounted() {
             this.selected = this.selectedOption as string;
