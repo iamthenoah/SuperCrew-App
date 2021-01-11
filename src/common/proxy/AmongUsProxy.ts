@@ -10,6 +10,7 @@ import { NotificationType } from '@/common/NotificationType';
 
 import Struct from 'structron';
 import MemoryReader from './MemoryReader';
+import Util from './Util';
 
 export default class AmongUsProxy {
 
@@ -50,7 +51,8 @@ export default class AmongUsProxy {
         if (this.previousGameState != processRunState) {
             this.previousGameState = processRunState;
             this.renderer('game-opened', processRunState);
-            if (processRunState) this.renderer('notify', `Among Us running...`, NotificationType.SUCCESS)
+            const version = Util.getCurrentVersion();
+            if (processRunState) this.renderer('notify', `Among Us running on version ${version}...`, NotificationType.SUCCESS)
         }
         
         if (processRunState) {

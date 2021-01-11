@@ -19,6 +19,7 @@
 .btn-inverted,
 .btn-danger,
 .btn-special,
+.btn-danger-inverted,
 .btn {
     user-select: none;
     width: auto;
@@ -46,6 +47,11 @@
     background: $red;
 }
 
+.btn-danger-inverted {
+    color: $red;
+    border: $red 2px solid;
+}
+
 .btn {
     border: $theme 2px solid;
     background: $theme;
@@ -59,6 +65,7 @@
 .btn:hover,
 .btn-special:hover,
 .btn-danger:hover,
+.btn-danger-inverted:hover,
 .btn-inverted:hover,
 .simple-link:hover {
     opacity: 0.75;
@@ -80,7 +87,7 @@
 }
 
 .large {
-    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100%;
     display: block;
     text-align: center;

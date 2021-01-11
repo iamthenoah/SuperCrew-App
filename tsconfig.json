@@ -35,7 +35,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx", 
     "src/keyPressEvents.ts"
-  ],
+, "src/common/electron-store.d.ts"  ],
   "exclude": [
     "node_modules"
   ]

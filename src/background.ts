@@ -1,9 +1,10 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { closeProxy } from './common/ipcMainEvents';
+import path from 'path';
 import './common/ipcMainEvents';
 //import './common/io';
 
@@ -15,21 +16,38 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
 	const win = new BrowserWindow({
-		width: 1020, // 300:400
+		show: false,
+		width: 320, // 320:400
 		height: 400,
 		frame: false,
 		resizable: false,
 		fullscreenable: false,
+		backgroundColor: '#303336',
 		webPreferences: {
-			//devTools: false,
+			devTools: false,
 			enableRemoteModule: true,
 			nodeIntegration: true,
 		},
 	});
 
+	const splashWin = new BrowserWindow({
+		width: 300,
+		height: 300,
+		frame: false,
+		alwaysOnTop: true,
+		backgroundColor: '#303336'
+	});
+	
+	splashWin.loadURL(path.join(__filename, 'splash.html'));
+
+	win.once('ready-to-show', () => {
+		splashWin.destroy();
+		win.show();
+	});
+	
 	ipcMain.handle('minimize-window', () => win.minimize());
 	ipcMain.handle('close-window', () => win.close());
-
+	
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
 		if (!process.env.IS_TEST) win.webContents.openDevTools();

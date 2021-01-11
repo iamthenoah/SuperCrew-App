@@ -6,12 +6,12 @@ export type Favortie = {
     count: number
 }
 
-export interface ISettings {
+export interface ISettingsSchema {
     offsets: IOffsets | null;
     server: string;
     perifs: {
-        input: string;
-        output: string;
+        input: string | null;
+        output: string | null;
     };
     shortcuts: {
         pushToTalk: string;
@@ -25,14 +25,14 @@ export interface ISettings {
     stats: {
         score: number;
         kills: number;
-        favorites: {
-            color: Favortie;
-            skin: Favortie;
-            hat: Favortie
-        };
         wins: number;
         lost: number;
         impostor: number;
         crewmate: number;
+        favorites: {
+            color: Favortie | null;
+            skin: Favortie | null;
+            hat: Favortie | null;
+        };
     }
 }

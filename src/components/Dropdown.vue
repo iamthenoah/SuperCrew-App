@@ -1,7 +1,7 @@
 <template>
     <div class="dropdown" @click="shouldToggleDropdown()">
         <div class="label-container" :class="{ 'active': isExpanded }">
-            <p class="text" :class="{ 'error' : requireSelected && !selected }">{{ selected ? selected : noneSelectedText }}</p>
+            <p class="text trucate" :class="{ 'error' : requireSelected && !selected }">{{ selected ? selected : noneSelectedText }}</p>
             <div :class="{ 'down-arrow': !isExpanded, 'up-arrow': isExpanded }"></div>
 		</div>
 		<div class="options" :class="{ 'hide': !isExpanded }">
@@ -12,7 +12,7 @@
                 <p>{{ canHaveNoneMessage }}</p>
             </div>
 			<div class="option" v-for="option in options" :key="option.key" @click="setCurrentSelectedOption(option)">
-                <p>{{ option.text }}</p>
+                <p class="trucate">{{ option.name }}</p>
             </div>
 		</div>
 
@@ -23,6 +23,13 @@
 
 	import { defineComponent } from 'vue';
     
+    export type DropdownOption = {
+        name: string;
+        key: string;
+    }
+
+    const options: DropdownOption[] = []; 
+
     export default defineComponent({
         emits: ['onSelectionChanged'],
         data() {
@@ -37,15 +44,15 @@
             noneSelectedText: String,
             requireSelected: Boolean,
             canHaveNoneMessage: String,
-            options: Object
+            options: Array
         },
-        mounted() {
-            this.selected = this.selectedOption as string;
+        created() {
+            setTimeout(() => this.selected = this.selectedOption as string, 0);
         },
         methods: {
             setCurrentSelectedOption: function(option) {
                 this.$emit('onSelectionChanged', option);
-                this.selected = option ? option.value : null;
+                this.selected = option ? option.name : null;
             },
             shouldToggleDropdown: function() {
                 this.isExpanded = !this.isExpanded;
@@ -71,6 +78,13 @@
         margin-bottom: 15px;
         font-size: 15px;
         font-family: 'Uni Sans', cursive;
+    }
+
+    .trucate {
+        text-overflow: ellipsis;
+        width: 190px;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .text {
@@ -112,6 +126,8 @@
         overflow: auto;
         max-height: 160px;
         z-index: 1000;
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .option {

@@ -39,7 +39,7 @@ input {
     left: 0;
     width: calc(100% - 10px);
     height: 33px;
-    padding-left: 10px;
+    padding-left: 7px;
     background: $darker;
     border-radius: 3px;
     border: $dark solid 1px;
@@ -79,7 +79,7 @@ hr {
 
 section {
     position: relative;
-    margin: 5px 30px;
+    margin: 15px 35px;
     height: 100%;
 }
 
@@ -106,15 +106,14 @@ h1 {
 }
 
 label {
-    margin-left: 10px;
-    margin-bottom: 10px !important;
     width: 100%;
     font-family: 'Verdana' 10px;
+    color: $dim;
 }
 
 h4 {
     font-size: 13px;
     font-family: 'Uni Sans', cursive;
     color: $dim;
-    margin-bottom: 15px;
+    margin: 15px 0;
 }
