@@ -1,19 +1,72 @@
 <!DOCTYPE html>
+
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <head>
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<link href=' http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	</head>
-	<style>
-		body {
-			color: yellow;
-			background: red;
-			width: 100%;
-			height: 100%;
+	
+    <style>
+        body {
+            overflow: hidden;
+            width: 300px;
+            height: 300px;
+            user-select: none;
+        }
+
+        #attire-logo {
+			height: 80px;
+			width: auto;
+			animation: breathe 2000ms ease-in-out infinite;
+        }
+
+		#logo-container {
+			position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+			width: auto;
+			height: auto;
 		}
-	</style>
-	<body style="background: red;">
-		<div>SPLASH SCREEN</div>
-		<img src="../src/assets/static/hats/48.png" alt="" srcset="">
+
+		#loading-text {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			margin: 15px;
+			color: white;
+			font-family: 'Roboto';
+		}
+
+		@keyframes breathe {
+			0% {
+				transform: scale(1);
+			}
+			50% {
+				transform: scale(0.9);
+			}
+			100%{
+				transform: scale(1);
+			}
+		}
+    </style>
+
+    <body>
+		<div id="logo-container">
+			<img id="attire-logo" />
+		</div>
 	</body>
+	
+    <script>		
+		const i = document.getElementById("attire-logo");
+		i.addEventListener('click', changeImage);
+
+		changeImage();
+		function changeImage() {
+			const r = Math.floor(92 * Math.random());
+			i.src = `../src/assets/static/hats/${r}.png`;
+		}
+    </script>
 </html>
