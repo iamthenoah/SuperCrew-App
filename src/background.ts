@@ -16,15 +16,16 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
 	const win = new BrowserWindow({
-		show: false,
-		width: 320, // 320:400
+		alwaysOnTop: isDevelopment,
+		width: 1020, // 320:400
 		height: 400,
+		show: false,
 		frame: false,
 		resizable: false,
 		fullscreenable: false,
 		backgroundColor: '#303336',
 		webPreferences: {
-			devTools: false,
+			//devTools: false,
 			enableRemoteModule: true,
 			nodeIntegration: true,
 		},
@@ -35,10 +36,17 @@ async function createWindow() {
 		height: 300,
 		frame: false,
 		alwaysOnTop: true,
-		backgroundColor: '#303336'
+		resizable: false,
+		backgroundColor: '#303336',
 	});
 	
-	splashWin.loadURL(path.join(__filename, 'splash.html'));
+	const splashUrl = require('url').format({
+		protocol: 'file',
+		slashes: true,
+		pathname: path.join(__dirname, '../public/splash.html')
+	});
+
+	splashWin.loadURL(splashUrl);
 
 	win.once('ready-to-show', () => {
 		splashWin.destroy();
