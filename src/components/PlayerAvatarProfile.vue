@@ -32,7 +32,7 @@
                     const colorId: number = this.avatar.colorId;
                     return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
                 } else {
-                    require(`@/assets/static/hats/${hatId}.png`);
+                    return require(`@/assets/static/hats/${hatId}.png`);
                 }
             },
             Skin: function() {
