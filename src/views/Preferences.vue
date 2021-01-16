@@ -113,19 +113,18 @@
 				settings
 			}
 		},
-		async created() {			
+		async mounted() {
 			navigator.mediaDevices.enumerateDevices()
 				.then(stream => {
-					this.inputDevices = [];
-					this.outputDevices = [];
 					for (const [ _, device ] of Object.entries(stream))
 						if (device.kind !== 'videoinput')
 							(device.kind === 'audioinput')
 								? this.inputDevices.push({ key: device.deviceId, name: device.label })
 								: this.outputDevices.push({ key: device.deviceId, name: device.label })
 				}).catch(err => this.$emit('notify', err.message));
-
 			this.settings = await ipcRenderer.invoke('get-user-settings') as ConfigurableSettings;
+			if (!this.inputDevices) this.settings.perifs.input = null;
+			if (!this.outputDevices) this.settings.perifs.output = null;
 		},
 		methods: {
 			changeSetting: function (key: string, value: string) { ipcRenderer.send('set-setting', ([[ key, value ]])) },
