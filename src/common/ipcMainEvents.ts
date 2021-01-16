@@ -95,7 +95,7 @@ async function runGameProxy(e: IpcMainEvent) {
                         discussion: GameProxy!.discussionState
                     }
                 } as AmongUsGameData;
-    
+
                 e.reply('game-data', data);
                 setTimeout(tick, isDevelopment ? 1000 : 50);
             }

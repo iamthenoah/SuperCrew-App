@@ -2,7 +2,7 @@
     <div class="noselect">
         <div class="avatar-container noselect">
             <img class="body" :src="Body">
-            <img class="hat" v-if="hasHat && !avatar.ghost" :class="{ 'back': isHatInBack }" :style="{ 'z-index': zIndex }" :src="Hat">
+            <img class="hat" v-if="hasHat && !avatar.ghost" :style="{ 'z-index': zIndex }" :src="Hat">
             <img class="skin" v-if="hasSkin && !avatar.ghost" :src="Skin">
         </div>
     </div>
