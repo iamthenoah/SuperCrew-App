@@ -23,21 +23,31 @@
             hasSkin: function(): boolean { return this.avatar.skinId !== 0 },
             Body: function() {
                 const colorId: number = this.avatar.colorId;
-                const state: string = this.avatar.ghost ? 'dead' : 'alive'; 
+                const state: string = this.avatar.isGhost ? 'dead' : 'alive';
                 return require(`@/assets/static/players/${state}/${colorId}.png`);
             },
             Hat: function() {
-                const hatId: number = this.avatar.hatId;
-                if (new Set([ 77 ]).has(hatId)) {
-                    const colorId: number = this.avatar.colorId;
-                    return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
+                if (this.hasHat && !this.avatar.isGhost) {
+                    const hatId: number = this.avatar.hatId;
+                    if (new Set([ 77 ]).has(hatId)) {
+                        const colorId: number = this.avatar.colorId;
+                        return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
+                    } else {
+                        try {
+                            return require(`@/assets/static/hats/${hatId}.png`);
+                        } catch (e) { return require('@/assets/static/hats/1.png'); }
+                    }
                 } else {
-                    return require(`@/assets/static/hats/${hatId}.png`);
-                }
+                    return '';
+                } 
             },
             Skin: function() {
-                const skinId: number = this.avatar.skinId;
-                return require(`@/assets/static/skins/${skinId}.png`);
+                if (this.hasSkin && !this.avatar.isGhost) {
+                    const skinId: number = this.avatar.skinId;
+                    return require(`@/assets/static/skins/${skinId}.png`);
+                } else {
+                    return '';
+                }
             },
         }
     });
@@ -49,17 +59,17 @@
 	@import './src/assets/styles/variables.scss';
 
     .avatar-container {
-        position: relative;
-        width: 150px;
-        height: 150px;
-        outline: red solid 1px;
-        padding-top: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-45%);
+        width: 100%;
+        height: 150%;
+        pointer-events: none;
     }
 
     .avatar-container img {
         position: absolute;
-        top: 0;
-        left: 0;
+        object-fit: contain;
         width: 100%;
         height: 100%;
     }
