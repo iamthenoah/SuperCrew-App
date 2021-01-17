@@ -109,6 +109,7 @@ async function runGameProxy(e: IpcMainEvent) {
 }
 
 async function loadNewOffsets(version: string): Promise<IOffsets> {
+    console.log('Loading new offsets', version);
     const offsets = await Util.getOffsetSchema(version as string);
     store.set('offsets', { offsetsStored: offsets, versionStored: version });
     return offsets as IOffsets;

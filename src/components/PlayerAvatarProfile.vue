@@ -21,33 +21,28 @@
             zIndex: function(): number { return new Set([ 4, 6, 15, 29, 39, 42, 85 ]).has(this.avatar.hatId) ? -1 : 0 },
             hasHat: function(): boolean { return this.avatar.hatId !== 0 },
             hasSkin: function(): boolean { return this.avatar.skinId !== 0 },
-            Body: function() {
+            Body: function(): NodeRequire {
                 const colorId: number = this.avatar.colorId;
                 const state: string = this.avatar.isGhost ? 'dead' : 'alive';
                 return require(`@/assets/static/players/${state}/${colorId}.png`);
             },
-            Hat: function() {
+            Hat: function(): NodeRequire {
                 if (this.hasHat && !this.avatar.isGhost) {
                     const hatId: number = this.avatar.hatId;
                     if (new Set([ 77 ]).has(hatId)) {
                         const colorId: number = this.avatar.colorId;
                         return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
-                    } else {
-                        try {
-                            return require(`@/assets/static/hats/${hatId}.png`);
-                        } catch (e) { return require('@/assets/static/hats/1.png'); }
                     }
-                } else {
-                    return '';
-                } 
+                    return require(`@/assets/static/hats/${hatId}.png`);
+                }
+                return null as unknown as NodeRequire;
             },
-            Skin: function() {
+            Skin: function(): NodeRequire {
                 if (this.hasSkin && !this.avatar.isGhost) {
                     const skinId: number = this.avatar.skinId;
                     return require(`@/assets/static/skins/${skinId}.png`);
-                } else {
-                    return '';
                 }
+                return null as unknown as NodeRequire;
             },
         }
     });

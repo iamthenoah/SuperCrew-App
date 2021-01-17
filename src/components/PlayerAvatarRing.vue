@@ -1,5 +1,5 @@
 <template>
-    <div class="ring noselect" :style="{ 'border': `solid 2px ${setRingColor()}`}">
+    <div class="ring noselect" :style="{ 'border': `solid 3px ${setRingColor()}`}">
         <PlayerAvatarProfile :avatar="avatar"/>
     </div>
 </template>

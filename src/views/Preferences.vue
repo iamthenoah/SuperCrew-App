@@ -12,7 +12,7 @@
 		<h4>Voice & Audio</h4>
 		<label>Microphone</label>
 		<Dropdown
-			:selectedOption="settings.perifs.input"
+			:selectedOption="settings.perifs.input?.name"
 			:noneSelectedText="'No input device'"
 			:choiceDescription="'Available Input Devices'"
 			:canHaveNoneMessage="'None'"
@@ -22,7 +22,7 @@
 		/>
 		<label>Audio Output</label>
 		<Dropdown
-			:selectedOption="settings.perifs.output"
+			:selectedOption="settings.perifs.output?.name"
 			:noneSelectedText="'No output device'"
 			:choiceDescription="'Available Output Devices'"
 			:canHaveNoneMessage="'None'"
@@ -116,19 +116,29 @@
 		async mounted() {
 			navigator.mediaDevices.enumerateDevices()
 				.then(stream => {
-					for (const [ _, device ] of Object.entries(stream))
+
+					this.inputDevices = [];
+					this.outputDevices = [];
+
+					// eslint-disable-next-line
+					for (const [ _, device ] of Object.entries(stream)) 
 						if (device.kind !== 'videoinput')
 							(device.kind === 'audioinput')
 								? this.inputDevices.push({ key: device.deviceId, name: device.label })
-								: this.outputDevices.push({ key: device.deviceId, name: device.label })
+								: this.outputDevices.push({ key: device.deviceId, name: device.label });
+
 				}).catch(err => this.$emit('notify', err.message));
+
 			this.settings = await ipcRenderer.invoke('get-user-settings') as ConfigurableSettings;
-			if (!this.inputDevices) this.settings.perifs.input = null;
-			if (!this.outputDevices) this.settings.perifs.output = null;
+
+			if (!this.inputDevices)
+				this.settings.perifs.input = null;
+			if (!this.outputDevices)
+				this.settings.perifs.output = null;
 		},
 		methods: {
-			changeSetting: function (key: string, value: string) { ipcRenderer.send('set-setting', ([[ key, value ]])) },
-			changePerif: function(option, key) { this.changeSetting(key, option ? option.name : null) },
+			changeSetting: function (key: string, value: unknown) { ipcRenderer.send('set-setting', ([[ key, value ]])) },
+			changePerif: function(option, key) { this.changeSetting(key, option ? { deviceId: option.key, name: option.name } : null) },
 		}
 	});
 
