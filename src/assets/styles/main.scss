@@ -180,7 +180,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: $darkest;
+    background: $darker;
 }
 
 .standalone-icon > img {
@@ -203,5 +203,5 @@
 }
 
 .standalone-icon:hover {
-    background: rgba(white, 0.075);
+    background: rgba($light, 0.5);
 }

@@ -15,7 +15,7 @@ html {
 
 body {
     color: white;
-    background: $light;
+    background: $dark;
     font-size: 14px;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -39,10 +39,10 @@ input {
     left: 0;
     width: calc(100% - 10px);
     height: 33px;
-    padding-left: 7px;
+    padding-left: 8.5px;
     background: $darker;
     border-radius: 3px;
-    border: $dark solid 1px;
+    border: transparent solid 1px;
     margin: 10px 0;
 }
 
@@ -73,8 +73,8 @@ li {
 hr {
     margin: 10px 0;
     border: none;
-    height: 1.5px;
-    background:$lighter; 
+    height: 0.1px;
+    background: $dim; 
 }
 
 section {
