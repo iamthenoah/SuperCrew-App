@@ -40,9 +40,9 @@ export default class AmongUsProxy {
 
         this.PlayerStruct = new Struct();
         for (const member of offsets.player.struct)
-            this.PlayerStruct = (member.type === 'SKIP' && member.skip) 
+            (member.type === 'SKIP' && member.skip) 
                 ? this.PlayerStruct.addMember(Struct.TYPES.SKIP(member.skip), member.name)
-			    : this.PlayerStruct = this.PlayerStruct.addMember(Struct.TYPES[member.type.toString()], member.name);
+			    : this.PlayerStruct.addMember(Struct.TYPES[member.type.toString()], member.name);
     }
 
     public operate(): void {
