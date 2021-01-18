@@ -29,7 +29,7 @@
             Hat: function(): NodeRequire {
                 if (this.hasHat && !this.avatar.isGhost) {
                     const hatId: number = this.avatar.hatId;
-                    if (new Set([ 77 ]).has(hatId)) {
+                    if (hatId === 77 || hatId === 90) {
                         const colorId: number = this.avatar.colorId;
                         return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
                     }
