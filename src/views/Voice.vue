@@ -3,6 +3,7 @@
         <section>
             <h4>STUFF</h4>
             <hr>
+            <button @click="send()" class="btn large">Send Message</button>
             <pre>{{ object }}</pre>
         </section>
     </div>
@@ -46,14 +47,23 @@
 		        analyser.connect(spn); 
                 spn.connect(actx.destination);
 
-                socket.on('connect', () => {
-                    console.log('connected to server');
-
-                    socket.on('received', (id, data) => console.log(id, data));
-                    socket.emit('send', 'D1', JSON.stringify(source));
-                });
-
             }, err => console.error(err));
+
+
+            socket.on('connect', () => {
+                console.log('connected to server');
+
+                socket.on('received', (id, data) => {
+                    this.object = data;
+                    console.log(id, data)
+                });
+            });
+        },
+        methods: {
+            send() {
+                console.log('sending...')
+                socket.emit('send', 'D1', JSON.stringify(this.object));
+            }
         }
     });
 
