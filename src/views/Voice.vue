@@ -14,7 +14,7 @@
     const { ipcRenderer } = window.require('electron');
     
     import { io } from 'socket.io-client';
-    const socket = io('https://supercrew.herokuapp.com');
+    const socket = io('http://192.168.0.27:3000/');
 
     export default defineComponent({
         data() {
@@ -43,7 +43,7 @@
                 const spn = actx.createScriptProcessor(1024, channels, channels);
     
                 source.connect(analyser);
-		        analyser.connect(spn);
+		        analyser.connect(spn); 
                 spn.connect(actx.destination);
 
                 socket.on('connect', () => {

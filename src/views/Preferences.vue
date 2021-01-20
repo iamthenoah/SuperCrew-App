@@ -2,8 +2,10 @@
 	<section>
 		<h4>Player & Gameplay</h4>
 		<label>Reference Name</label>
-		<input type="text" spellcheck="false" v-model="settings.displayName">
-		<button class="btn-special large">Update Name</button>
+		<form @submit.prevent="changeSetting('displayName', this.settings.displayName)">
+			<input type="text" spellcheck="false" v-model="settings.displayName">
+			<button type="submit" class="btn-special large">Update Name</button>
+		</form>
 		<label>Hide Code in Lobby</label>
 		<input type="text" spellcheck="false" v-model="settings.configs.hideCode">
 	</section>
@@ -31,6 +33,7 @@
 			@onSelectionChanged="changePerif($event, 'output')"
 		/>
 		<label>Push to Talk Shortcut</label>
+		<SingleCharInput />
 		<input type="text" v-model="settings.shortcuts.pushToTalk">
 		<label>Deafen Shortcut</label>
 		<input type="text" v-model="settings.shortcuts.deafen">
@@ -51,7 +54,7 @@
 	<section>
 		<hr>
 		<h4>Danger Zone</h4>
-		<button class="btn-danger-inverted large">Reset Settings to Default</button>
+		<button class="btn-danger large">Reset Settings</button>
 		<p>Resets app settings to its initial state.</p>
 		<p>display name, server source, audio sources, etc.</p>
 	</section>
@@ -60,6 +63,7 @@
 <script lang="ts">
 
 	import Dropdown, { DropdownOption } from '@/components/Dropdown.vue';
+	import SingleCharInput from '@/components/SingleCharInput.vue';
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 
@@ -104,13 +108,14 @@
     export default defineComponent({
 		emits: ['submit', 'notify'],
 		components: {
-			Dropdown
+			Dropdown,
+			SingleCharInput
 		},
 		data() {
 			return {
 				inputDevices,
 				outputDevices,
-				settings
+				settings,
 			}
 		},
 		async mounted() {

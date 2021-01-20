@@ -44,7 +44,7 @@
 	const GameData: AmongUsGameData | null = null;
 
     export default defineComponent({
-		emits: ['submit'],
+		emits: ['submit', 'notify'],
 		components: {
 			PlayerAvatarRing,
 		},
