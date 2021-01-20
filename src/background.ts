@@ -21,7 +21,7 @@ async function createWindow() {
 		height: 400,
 		show: false,
 		frame: false,
-		resizable: false,
+		resizable: isDevelopment,
 		fullscreenable: false,
 		backgroundColor: '#303336',
 		webPreferences: {
@@ -37,7 +37,7 @@ async function createWindow() {
 		frame: false,
 		alwaysOnTop: true,
 		resizable: false,
-		backgroundColor: '#303336',
+		backgroundColor: '#2b3138',
 	});
 	
 	const splashUrl = require('url').format({
@@ -49,8 +49,10 @@ async function createWindow() {
 	splashWin.loadURL(splashUrl);
 
 	win.once('ready-to-show', () => {
-		splashWin.destroy();
-		win.show();
+		setTimeout(() => {
+			splashWin.destroy();
+			win.show();
+		}, 100000);
 	});
 	
 	ipcMain.handle('minimize-window', () => win.minimize());

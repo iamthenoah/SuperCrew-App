@@ -18,7 +18,7 @@
     export default defineComponent({
         props: { avatar },
         computed: {
-            zIndex: function(): number { return new Set([ 4, 6, 15, 29, 39, 42, 85 ]).has(this.avatar.hatId) ? -1 : 0 },
+            zIndex: function(): number { return new Set([ 4, 6, 15, 29, 39, 42, 75, 85 ]).has(this.avatar.hatId) ? -1 : 0 },
             hasHat: function(): boolean { return this.avatar.hatId !== 0 },
             hasSkin: function(): boolean { return this.avatar.skinId !== 0 },
             Body: function(): NodeRequire {

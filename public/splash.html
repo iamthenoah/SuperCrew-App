@@ -1,73 +1,94 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <head>
         <meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-		<link href=' http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	</head>
-	
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <link
+            href=" http://fonts.googleapis.com/css?family=Roboto"
+            rel="stylesheet"
+            type="text/css"
+        />
+    </head>
+
     <style>
         body {
             overflow: hidden;
             width: 300px;
             height: 300px;
-            user-select: none;
         }
-
-        #attire-logo {
-			height: 100%;
-			width: auto;
-			margin-top: 20px;
-			animation: breathe 2000ms ease-in-out infinite;
-        }
-
-		#logo-container {
+		
+        img {
 			position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) scale(1);
-			width: auto;
-			height: auto;
+            transform: translate(-50%, -50%);
 		}
-
-		#loading-text {
+		
+		#character {
 			position: absolute;
-			left: 0;
-			bottom: 0;
-			margin: 15px;
-			color: white;
-			font-family: 'Roboto';
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			animation: breathe 2000ms ease-in-out infinite;
+			user-select: none;
 		}
 
-		@keyframes breathe {
-			0% {
-				transform: scale(1);
-			}
-			50% {
-				transform: scale(0.9);
-			}
-			100%{
-				transform: scale(1);
-			}
-		}
+        .back {
+            z-index: -10;
+        }
+
+        .front {
+            z-index: 10;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     </style>
 
     <body>
-		<div id="logo-container">
-			<img id="attire-logo" />
-		</div>
-	</body>
-	
-    <script>		
-		const i = document.getElementById("attire-logo");
-		i.addEventListener('click', changeImage);
+        <div id="character">
+            <img id="hat" />
+            <img id="body" />
+            <img id="skin" />
+        </div>
+    </body>
 
-		changeImage();
-		function changeImage() {
-			const r = Math.floor(92 * Math.random());
-			i.src = `../src/assets/static/hats/${r}.png`;
-		}
+    <script>
+        document
+            .getElementById("character")
+            .addEventListener("click", changeImage);
+
+        const h = document.getElementById("hat");
+        const b = document.getElementById("body");
+        const s = document.getElementById("skin");
+
+        changeImage();
+        function changeImage() {
+            const rb = Math.floor(11 * Math.random());
+            const rh = Math.floor(92 * Math.random() + 1);
+            const rs = Math.floor(14 * Math.random() + 1);
+            h.src = rh == 77 || rh == 90
+				? `../src/assets/static/hats/${rh}/${rb}.png`
+				: `../src/assets/static/hats/${rh}.png`;
+            if (new Set([4, 6, 15, 29, 39, 42, 75, 85]).has(rh)) {
+                h.classList.add("back");
+                h.classList.remove("front");
+            } else {
+                h.classList.add("front");
+                h.classList.remove("back");
+            }
+            b.src = `../src/assets/static/players/alive/${rb}.png`;
+            s.src = `../src/assets/static/skins/${rs}.png`;
+        }
     </script>
 </html>
