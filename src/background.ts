@@ -49,10 +49,8 @@ async function createWindow() {
 	splashWin.loadURL(splashUrl);
 
 	win.once('ready-to-show', () => {
-		setTimeout(() => {
-			splashWin.destroy();
-			win.show();
-		}, 100000);
+		splashWin.destroy();
+		win.show();
 	});
 	
 	ipcMain.handle('minimize-window', () => win.minimize());
