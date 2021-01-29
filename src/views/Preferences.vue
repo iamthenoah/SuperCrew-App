@@ -33,10 +33,9 @@
 			@onSelectionChanged="changePerif($event, 'output')"
 		/>
 		<label>Push to Talk Shortcut</label>
-		<SingleCharInput />
-		<input type="text" v-model="settings.shortcuts.pushToTalk">
+		<SingleCharInput :inputChar="settings.shortcuts.pushToTalk"/>
 		<label>Deafen Shortcut</label>
-		<input type="text" v-model="settings.shortcuts.deafen">
+		<!-- <SingleCharInput :inputChar="settings.shortcuts.deafen"/> -->
 	</section>
 	<section>
 		<hr>
@@ -142,8 +141,12 @@
 				this.settings.perifs.output = null;
 		},
 		methods: {
-			changeSetting: function (key: string, value: unknown) { ipcRenderer.send('set-setting', ([[ key, value ]])) },
-			changePerif: function(option, key) { this.changeSetting(key, option ? { deviceId: option.key, name: option.name } : null) },
+			changeSetting: function (key: string, value: unknown) {
+				ipcRenderer.send('set-setting', ([[ key, value ]]));
+			},
+			changePerif: function(option: { key: string; name: (string | object | number) }, key: string) {
+				this.changeSetting(key, option ? { deviceId: option.key, name: option.name } : null);
+			},
 		}
 	});
 

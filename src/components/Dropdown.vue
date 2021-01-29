@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown" @click="shouldToggleDropdown()">
+    <div v-click-outside="onClickOutside" class="dropdown" @click="shouldToggleDropdown()">
         <div class="label-container" :class="{ 'active': isExpanded }">
             <p class="text trucate" :class="{ 'error' : requireSelected && !selected }">{{ selected ? selected : noneSelectedText }}</p>
             <div :class="{ 'down-arrow': !isExpanded, 'up-arrow': isExpanded }"></div>
@@ -28,8 +28,6 @@
         key: string;
     }
 
-    const options: DropdownOption[] = []; 
-
     export default defineComponent({
         emits: ['onSelectionChanged'],
         data() {
@@ -56,6 +54,9 @@
             },
             shouldToggleDropdown: function() {
                 this.isExpanded = !this.isExpanded;
+            },
+            onClickOutside: function () {
+                this.isExpanded = false;
             }
         },
 	});
@@ -73,7 +74,7 @@
         user-select: none;
         border-radius: 3px;
         width: 100%;
-        height: 33px;
+        height: 37px;
         background: $darker;
         margin-bottom: 15px;
         font-size: 15px;
@@ -82,14 +83,14 @@
 
     .trucate {
         text-overflow: ellipsis;
-        width: 190px;
+        width: 205px;
         overflow: hidden;
         white-space: nowrap;
     }
 
     .text {
         position: absolute;
-        line-height: 27px;
+        line-height: 32px;
     }
 
     .option-spacer {
