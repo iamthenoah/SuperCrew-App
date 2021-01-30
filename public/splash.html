@@ -78,8 +78,8 @@
             const rh = Math.floor(92 * Math.random() + 1);
             const rs = Math.floor(14 * Math.random() + 1);
             h.src = (rh == 77 || rh == 90)
-				? `../src/assets/static/hats/${rh}/${rb}.png`
-				: `../src/assets/static/hats/${rh}.png`;
+				? `../src/assets/static/game/hats/${rh}/${rb}.png`
+				: `../src/assets/static/game/hats/${rh}.png`;
             if (new Set([4, 6, 15, 29, 39, 42, 75, 85]).has(rh)) {
                 h.classList.add("back");
                 h.classList.remove("front");
@@ -87,8 +87,8 @@
                 h.classList.add("front");
                 h.classList.remove("back");
             }
-            b.src = `../src/assets/static/players/alive/${rb}.png`;
-            s.src = `../src/assets/static/skins/${rs}.png`;
+            b.src = `../src/assets/static/game/players/alive/${rb}.png`;
+            s.src = `../src/assets/static/game/skins/${rs}.png`;
         }
     </script>
 </html>

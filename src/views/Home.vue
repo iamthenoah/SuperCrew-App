@@ -14,7 +14,7 @@
 <script lang="ts">
 
 	import { defineComponent } from 'vue';
-	import GameTips from '@/assets/GameTips.json';
+	import GameTips from '@/assets/static/game/GameTips.json';
 	const { ipcRenderer } = window.require('electron');
 
 	export interface GameTip {

@@ -3,18 +3,18 @@
         <ul>
             <ol>
                 <div class="standalone-icon" @click="mute">
-                    <img v-if="!muted" src="@/assets/icons/microphone.png">
-                    <img v-else src="@/assets/icons/microphone_disabled.png">
+                    <img v-if="!muted" src="@/assets/static/icons/microphone.png">
+                    <img v-else src="@/assets/static/icons/microphone_disabled.png">
                 </div>
             </ol>
             <ol>
                 <div class="standalone-icon" @click="deafen">
-                    <img v-if="!deafened" src="@/assets/icons/headphones.png">
-                    <img v-else src="@/assets/icons/headphones_disabled.png">
+                    <img v-if="!deafened" src="@/assets/static/icons/headphones.png">
+                    <img v-else src="@/assets/static/icons/headphones_disabled.png">
                 </div>
             </ol>
             <ol>
-                <div :class="{ 'toggled': settings }" class="standalone-icon" @click="toggleSettings()"><img src="@/assets/icons/gear.png"></div>
+                <div :class="{ 'toggled': settings }" class="standalone-icon" @click="toggleSettings()"><img src="@/assets/static/icons/gear.png"></div>
             </ol>
         </ul>
     </div>

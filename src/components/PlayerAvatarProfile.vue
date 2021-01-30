@@ -24,23 +24,23 @@
             Body: function(): NodeRequire {
                 const colorId: number = this.avatar.colorId;
                 const state: string = this.avatar.isGhost ? 'dead' : 'alive';
-                return require(`@/assets/static/players/${state}/${colorId}.png`);
+                return require(`@/assets/static/game/players/${state}/${colorId}.png`);
             },
             Hat: function(): NodeRequire {
                 if (this.hasHat && !this.avatar.isGhost) {
                     const hatId: number = this.avatar.hatId;
                     if (hatId === 77 || hatId === 90) {
                         const colorId: number = this.avatar.colorId;
-                        return require(`@/assets/static/hats/${hatId}/${colorId}.png`)
+                        return require(`@/assets/static/game/hats/${hatId}/${colorId}.png`)
                     }
-                    return require(`@/assets/static/hats/${hatId}.png`);
+                    return require(`@/assets/static/game/hats/${hatId}.png`);
                 }
                 return null as unknown as NodeRequire;
             },
             Skin: function(): NodeRequire {
                 if (this.hasSkin && !this.avatar.isGhost) {
                     const skinId: number = this.avatar.skinId;
-                    return require(`@/assets/static/skins/${skinId}.png`);
+                    return require(`@/assets/static/game/skins/${skinId}.png`);
                 }
                 return null as unknown as NodeRequire;
             },
