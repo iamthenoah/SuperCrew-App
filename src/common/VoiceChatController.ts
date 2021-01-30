@@ -5,11 +5,11 @@ export default class VoiceChatController {
     private analyser: AnalyserNode;
     private processor: ScriptProcessorNode;
 
-    private onUpdate: (talking: boolean) => void;
+    private onUpdate: (active: boolean) => void;
     private onVoiceActive: () => void;
     private onVoiceInactive: () => void;
 
-    constructor(context: AudioContext, source: AudioNode) {    
+    constructor(context: AudioContext, source: AudioNode) {
         this.hasCapturedSound = false;
         this.onUpdate = () => { /* ... */ };
         this.onVoiceActive = () => { /* ... */ };
@@ -20,22 +20,23 @@ export default class VoiceChatController {
         this.analyser.fftSize = 1024;
         
         this.processor = context.createScriptProcessor(this.analyser.fftSize, 1, 1);
-
-        this.processor.onaudioprocess = () => {
-            const fbc = new Uint8Array(this.analyser.frequencyBinCount);
-            this.analyser.getByteFrequencyData(fbc);
-            const average = fbc.reduce((a, b) => a + b, 0) / fbc.length;
-            const talking = (average >= 50);
-            if (this.hasCapturedSound != talking) {
-                this.hasCapturedSound = talking;
-                this.onUpdate(talking);
-                talking ? this.onVoiceActive() : this.onVoiceInactive();
-            }
-        }
+        this.processor.onaudioprocess = () => this.audioProcessing();
         
         source.connect(this.analyser);
         this.analyser.connect(this.processor);
         this.processor.connect(context.destination);
+    }
+    
+    public audioProcessing() {
+        const fbc = new Uint8Array(this.analyser.frequencyBinCount);
+        this.analyser.getByteFrequencyData(fbc);
+        const average = fbc.reduce((a, b) => a + b, 0) / fbc.length;
+        const talking = (average >= 50);
+        if (this.hasCapturedSound != talking) {
+            this.hasCapturedSound = talking;
+            this.onUpdate(talking);
+            talking ? this.onVoiceActive() : this.onVoiceInactive();
+        }
     }
 
     public onActive(cb: () => void) {

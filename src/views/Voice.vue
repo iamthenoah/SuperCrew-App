@@ -27,10 +27,12 @@
         async mounted() {
             console.clear();
 
-            const { input } = await ipcRenderer.invoke('get-setting', [ 'input', 'output' ]);
-            const audio = { deviceId: input.deviceId };
+            const { input } = await ipcRenderer.invoke('get-setting', [ 'input' ]);
+            const audio = {
+                deviceId: input.deviceId
+            };
 
-            navigator.getUserMedia({ video: false, audio }, async stream => {
+            navigator.getUserMedia({ video: false, audio }, stream => {
                 
                 console.log('SOURCE:', stream.getAudioTracks()[0].label);
                 
