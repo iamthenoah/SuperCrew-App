@@ -20,7 +20,7 @@
 			:canHaveNoneMessage="'None'"
 			:requireSelected="true"
 			:options="inputDevices"
-			@onSelectionChanged="changePerif($event, 'input')"
+			@onSelectionChanged="changePerif('input', $event)"
 		/>
 		<label>Audio Output</label>
 		<Dropdown
@@ -30,12 +30,22 @@
 			:canHaveNoneMessage="'None'"
 			:requireSelected="true"
 			:options="outputDevices"
-			@onSelectionChanged="changePerif($event, 'output')"
+			@onSelectionChanged="changePerif('output', $event)"
 		/>
 		<label>Push to Talk Shortcut</label>
-		<SingleCharInput :inputChar="settings.shortcuts.pushToTalk"/>
+		<SingleCharInput
+			:validation="validateShortcutInput"
+			:uniqueInputIdentifier="'pushToTalkKey'"
+			:inputChar="settings.shortcuts.pushToTalkKey?.keyText"
+			@onCharChanged="changeSetting('pushToTalkKey', $event)"
+		/>
 		<label>Deafen Shortcut</label>
-		<!-- <SingleCharInput :inputChar="settings.shortcuts.deafen"/> -->
+		<SingleCharInput 
+			:validation="validateShortcutInput"
+			:uniqueInputIdentifier="'deafenKey'"
+			:inputChar="settings.shortcuts.deafenKey?.keyText"
+			@onCharChanged="changeSetting('deafenKey', $event)"
+		/>
 	</section>
 	<section>
 		<hr>
@@ -63,6 +73,7 @@
 
 	import Dropdown, { DropdownOption } from '@/components/Dropdown.vue';
 	import SingleCharInput from '@/components/SingleCharInput.vue';
+	import { NotificationType } from '@/common/NotificationType';
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 
@@ -74,8 +85,14 @@
             output: string | null;
         };
         shortcuts: {
-            pushToTalk: string;
-            deafen: string;
+            pushToTalkKey: {
+				keyText: string;
+				keyCode: number;
+			} | null;
+            deafenKey: {
+				keyText: string;
+				keyCode: number;
+			} | null;
         };
         configs: {
             pushToTalk: boolean;
@@ -94,8 +111,8 @@
             output: null
         },
         shortcuts: {
-            pushToTalk: 'V',
-            deafen: 'B',
+            pushToTalkKey: null,
+            deafenKey: null,
         },
         configs: {
             pushToTalk: true,
@@ -135,18 +152,36 @@
 
 			this.settings = await ipcRenderer.invoke('get-user-settings') as ConfigurableSettings;
 
+			// console.log(this.settings.shortcuts.pushToTalkKey);
+
 			if (!this.inputDevices)
 				this.settings.perifs.input = null;
 			if (!this.outputDevices)
 				this.settings.perifs.output = null;
 		},
 		methods: {
+			getSetting: async function(params: string[]) {
+				return await ipcRenderer.invoke('get-setting', params);
+			},
 			changeSetting: function (key: string, value: unknown) {
 				ipcRenderer.send('set-setting', ([[ key, value ]]));
 			},
-			changePerif: function(option: { key: string; name: (string | object | number) }, key: string) {
+			changePerif: function(key: string, option: { key: string; name: (string | object | number) }) {
 				this.changeSetting(key, option ? { deviceId: option.key, name: option.name } : null);
 			},
+			validateShortcutInput: async function(key: string, code: number): Promise<boolean> {
+				const toWords = (cword: string): string => {
+					const s = cword.replace(/([A-Z])/g, " $1");
+					return s.charAt(0).toUpperCase() + s.slice(1);
+				}
+
+				const from = key.indexOf('pushToTalkKey') > -1 ? 'deafenKey' : 'pushToTalkKey';
+				const res = await this.getSetting([from]);
+				const valid = !(res[from].keyCode === code);
+
+				if (!valid) this.$emit('notify', `${toWords(key)} cannot be the same as ${toWords(from)}.`, NotificationType.WARNING);
+				return valid;
+			}
 		}
 	});
 

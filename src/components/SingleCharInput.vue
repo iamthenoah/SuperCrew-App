@@ -1,6 +1,17 @@
 <template>
-	<div v-click-outside="onClickOutside" @click="listenForInput()" class="single-char-input-container" :class="{ 'focus-border' : focused }">
-		<div class="input-char">{{ focused ? inputTextPress : inputChar }}</div>
+	<div
+		tabindex="0"
+		v-click-outside="finishOperation"
+		@click="listenForInput"
+		@keydown="changeInput($event)"
+		@keyup="finishOperation()"
+		:class="{ 'focus-border' : focused }"
+		class="single-char-input-container"
+	>
+		<!-- tabindex prop makes div susceptible to key press events -->
+		<div class="input-char">
+			{{ focused ? inputTextPress : key }}
+		</div>
 	</div>
 </template>
 
@@ -13,6 +24,7 @@
 		data() {
 			return {
 				focused: false,
+				key: '',
 			}
 		},
 		props: {
@@ -23,20 +35,43 @@
 			inputTextPress: {
 				type: String,
 				default: 'press any key...'
+			},
+			validation: {
+				type: Function,
+				default: () => true
+			},
+			uniqueInputIdentifier: {
+				type: String,
+				default: ''
 			}
 		},
+		mounted() {
+			this.key = this.inputChar
+		},
 		methods: {
-            changeInput: function() {
-				this.focused = false;
-                this.$emit('onCharChanged', );
+            changeInput: async function(e: KeyboardEvent) {
+				this.finishOperation();
+				
+				const c = e.keyCode;
+				const k = e.key.toUpperCase();
+
+				if (c === 27) return;
+				const canChangeInput = await this.validation(this.uniqueInputIdentifier, c);
+				
+				if (canChangeInput) {
+					this.key = k;
+					this.$emit('onCharChanged', {
+						keyText: k,
+						keyCode: c 
+					});
+				}
             },
             listenForInput: function() {
 				this.focused = true;
-				console.log('listening...')
 			},
-			onClickOutside: function (e: MouseEvent) {
+			finishOperation: function () {
+				this.$el.blur();
 				this.focused = false;
-				// console.log(e)
 			}
 		},
     });
@@ -54,6 +89,7 @@
 		border-radius: 3px;
 		background: $darker;
 	    border: transparent solid 1px;
+		outline: none;
 		margin: 10px 0;
 		cursor: pointer;   
 	}
