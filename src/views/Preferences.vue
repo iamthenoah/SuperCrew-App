@@ -41,6 +41,7 @@
 		/>
 		<label>Deafen Shortcut</label>
 		<SingleCharInput 
+			v-tooltip="'deafen keyboard shortcut'"
 			:validation="validateShortcutInput"
 			:uniqueInputIdentifier="'deafenKey'"
 			:inputChar="settings.shortcuts.deafenKey?.keyText"
@@ -73,7 +74,6 @@
 
 	import Dropdown, { DropdownOption } from '@/components/Dropdown.vue';
 	import SingleCharInput from '@/components/SingleCharInput.vue';
-	import { NotificationType } from '@/common/NotificationType';
 	import { defineComponent } from 'vue';
 	const { ipcRenderer } = window.require('electron');
 
@@ -152,8 +152,6 @@
 
 			this.settings = await ipcRenderer.invoke('get-user-settings') as ConfigurableSettings;
 
-			// console.log(this.settings.shortcuts.pushToTalkKey);
-
 			if (!this.inputDevices)
 				this.settings.perifs.input = null;
 			if (!this.outputDevices)
@@ -179,7 +177,7 @@
 				const res = await this.getSetting([from]);
 				const valid = !(res[from].keyCode === code);
 
-				if (!valid) this.$emit('notify', `${toWords(key)} cannot be the same as ${toWords(from)}.`, NotificationType.WARNING);
+				if (!valid) this.$emit('notify', `${toWords(key)} cannot be the same as ${toWords(from)}.`);
 				return valid;
 			}
 		}

@@ -46,7 +46,7 @@
 			}
 		},
 		mounted() {
-			this.key = this.inputChar
+			setTimeout(() => this.key = this.inputChar, 10)
 		},
 		methods: {
             changeInput: async function(e: KeyboardEvent) {
