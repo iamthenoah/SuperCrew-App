@@ -2,13 +2,13 @@
     <div id="control-container" class="noselect">
         <ul>
             <ol>
-                <div class="standalone-icon" @click="mute">
+                <div v-tooltip="'mute'" class="standalone-icon" @click="mute()">
                     <img v-if="!muted" src="@/assets/static/icons/microphone.png">
                     <img v-else src="@/assets/static/icons/microphone_disabled.png">
                 </div>
             </ol>
             <ol>
-                <div class="standalone-icon" @click="deafen">
+                <div v-tooltip="'deafen'" class="standalone-icon" @click="deafen()">
                     <img v-if="!deafened" src="@/assets/static/icons/headphones.png">
                     <img v-else src="@/assets/static/icons/headphones_disabled.png">
                 </div>

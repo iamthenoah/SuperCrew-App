@@ -205,3 +205,29 @@
 .standalone-icon:hover {
     background: rgba($light, 0.5);
 }
+
+.tooltip {
+    user-select: none;
+    z-index: 10000;
+    position: absolute;
+    transform: translateX(-50%);
+    top: calc(-100% - 10px);
+    left: 50%;
+    width: fit-content;
+    height: auto;
+    padding: 10px 15px;
+    background: $darkest;
+    color: white;
+    border-radius: 3px;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -5px;
+    width: 10px;
+    height: 5px;
+    background: $darkest;
+    clip-path: polygon(100% 0, 0 0, 50% 100%);
+}

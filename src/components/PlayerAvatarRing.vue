@@ -1,5 +1,9 @@
 <template>
-    <div class="ring noselect" :style="{ 'border': `solid 3px ${setRingColor()}`}">
+    <div 
+        class="ring noselect" 
+        v-tooltip="'player.properties.playerName'" 
+        :style="{ 'border': `solid 3px ${setRingColor()}`}"
+    >
         <PlayerAvatarProfile :avatar="avatar"/>
     </div>
 </template>

@@ -34,6 +34,7 @@
 		/>
 		<label>Push to Talk Shortcut</label>
 		<SingleCharInput
+			v-tooltip="'push to talk keyboard shortcut'"
 			:validation="validateShortcutInput"
 			:uniqueInputIdentifier="'pushToTalkKey'"
 			:inputChar="settings.shortcuts.pushToTalkKey?.keyText"
@@ -52,7 +53,9 @@
 		<hr>
 		<h4>Appearance</h4>
 		<label>App Theme</label>
+		<div v-tooltip="'change the apps color theme'">
 		<input type="text" spellcheck="false" v-model="settings.configs.theme">
+		</div>
 	</section>
 	<section>
 		<hr>

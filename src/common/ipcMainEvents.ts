@@ -127,7 +127,7 @@ ipcMain.handle('get-setting', (_, keys: string[]): object => {
 
 ipcMain.on('set-setting', (e: IpcMainEvent, params: string[]) => {
     for (const i in params) store.set(params[i][0], params[i][1]);
-    e.reply('notify', 'Changes have been saved.', NotificationType.SUCCESS)
+    // e.reply('notify', 'Changes have been saved.', NotificationType.SUCCESS)
 });
 
 ipcMain.handle('get-user-settings', (_): object => {
