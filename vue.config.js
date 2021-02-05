@@ -1,14 +1,11 @@
-// REQUIRED WITH ELECTRON:BUILD
-
 module.exports = {
     pluginOptions: {
         electronBuilder: {
-            chainWebpackMainProcess: (config) => console.log(config),
-            chainWebpackRendererProcess: (config) => console.log(config),
-            // mainProcessFile: 'src/background.ts',
+            // chainWebpackMainProcess: (config) => console.log(config),
+            // chainWebpackRendererProcess: (config) => console.log(config),
             builderOptions: {
                 appId: "supercrewapp",
-                productName: "Supercrew App",
+                productName: "Supercrew",
                 target: "nsis",
                 files: {
                     filters: ['dist_electron/**/*']
