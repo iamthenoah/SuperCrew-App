@@ -5,7 +5,7 @@ export default {
 		const tooltipContainer = document.createElement('div');
 		tooltipContainer.classList.add('tooltip');
 		const tooltipText = `
-            <span>${binding.value}</span>
+            <span>${binding.value ? binding.value : '...'}</span>
             <div class="tooltip-arrow"></div>
         `;
 		tooltipContainer.innerHTML = tooltipText;

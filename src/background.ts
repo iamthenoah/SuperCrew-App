@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { closeProxy } from './common/ipcMainEvents';
+import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import './common/ipcMainEvents';
 //import './common/io';
@@ -17,7 +18,7 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
 	const win = new BrowserWindow({
 		alwaysOnTop: isDevelopment,
-		width: 1020, // 320:400
+		width: isDevelopment ? 1000 : 320, // 320:400
 		height: 400,
 		show: false,
 		frame: false,
@@ -25,7 +26,7 @@ async function createWindow() {
 		fullscreenable: false,
 		backgroundColor: '#303336',
 		webPreferences: {
-			//devTools: false,
+			// devTools: true,
 			enableRemoteModule: true,
 			nodeIntegration: true,
 		},
@@ -48,9 +49,45 @@ async function createWindow() {
 
 	splashWin.loadURL(splashUrl);
 
+	// ===================================
+	// 				UPDATER
+	// ===================================
+
+	// console.log(autoUpdater.getFeedURL())
+
+	autoUpdater.checkForUpdates();
+
+	autoUpdater.on('checking-for-update', () => {
+		console.log('Checking for update...');
+	});
+	autoUpdater.on('update-available', (_) => {
+		console.log('Update available.');
+	});
+	autoUpdater.on('update-not-available', (_) => {
+		console.log('Update not available.');
+	});
+	autoUpdater.on('error', (err) => {
+		console.log('Error in auto-updater. ' + err);
+	});
+	autoUpdater.on('download-progress', (progressObj) => {
+		let log = "Download speed: " + progressObj.bytesPerSecond;
+		log = log + ' - Downloaded ' + progressObj.percent + '%';
+		log = log + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+		console.log(log);
+	});
+	autoUpdater.on('update-downloaded', (_) => {
+		console.log('Update downloaded');
+	});
+
+	// ===================================
+	//             UPDATEREND
+	// ===================================
+
 	win.once('ready-to-show', () => {
-		splashWin.destroy();
-		win.show();
+		setTimeout(() => {
+			splashWin.destroy();
+			win.show();
+		}, 1000)
 	});
 	
 	ipcMain.handle('minimize-window', () => win.minimize());
@@ -63,7 +100,7 @@ async function createWindow() {
 		createProtocol('app');
 		win.loadURL('app://./index.html');
 	}
-};
+}
 
 
 app.on('window-all-closed', () => {
@@ -108,4 +145,4 @@ if (isDevelopment) {
 			app.quit();
 		});
 	}
-};
+}

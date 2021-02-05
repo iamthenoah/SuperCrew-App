@@ -54,7 +54,7 @@
 		},
 		mounted() {
 			ipcRenderer.send('check-game-opened');
-			ipcRenderer.on('game-opened', (_: Electron.IpcRendererEvent, opened: boolean) => {
+			ipcRenderer.on('game-open-state', (_: Electron.IpcRendererEvent, opened: boolean) => {
 				this.$router.push(opened ? '/playing' : '/');
 				this.globalSubmit(false);
 			});

@@ -82,6 +82,7 @@ async function runGameProxy(e: IpcMainEvent) {
         if (!offsets) throw new Error('Could not load game offests... Server ran into an error.');
         
         let GameProxy: AmongUsProxy | null = new AmongUsProxy(e.reply as (event: string, ...args: unknown[]) => void, offsets as IOffsets);
+        e.reply('game-open-state', true);
         
         const tick = () => {
             if (GameProxy) {
@@ -135,7 +136,7 @@ ipcMain.on('set-setting', (e: IpcMainEvent, params: string[]) => {
 
         const r = getSetting([key]);
         const oldValue = r[key];
-                
+
         if (oldValue != value) {
             hasChangedSetting = true;
             store.set(key, value);
