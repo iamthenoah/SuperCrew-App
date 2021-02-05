@@ -2,19 +2,31 @@
     <div id="control-container" class="noselect">
         <ul>
             <ol>
-                <div v-tooltip="'mute'" class="standalone-icon" @click="toggleMute()">
-                    <img v-if="!muted" src="@/assets/static/icons/microphone.png">
-                    <img v-else src="@/assets/static/icons/microphone_disabled.png">
+                <div class="tooltip-container" v-tooltip="muted ? 'unmute' : 'mute'">
+                    <div class="standalone-icon" @click="toggleMute()">
+                        <div v-if="muted">
+                            <div class="crossed-bg"></div>
+                            <div class="crossed-red"></div>
+                        </div>
+                        <img src="@/assets/static/icons/new/microphone.png">
+                    </div>
                 </div>
             </ol>
             <ol>
-                <div v-tooltip="'deafen'" class="standalone-icon" @click="toggleDeafen()">
-                    <img v-if="!deafened" src="@/assets/static/icons/headphones.png">
-                    <img v-else src="@/assets/static/icons/headphones_disabled.png">
+                <div class="tooltip-container" v-tooltip="deafened ? 'undeafen' : 'deafen'">
+                    <div class="standalone-icon" @click="toggleDeafen()">
+                        <div v-if="deafened">
+                            <div class="crossed-bg"></div>
+                            <div class="crossed-red"></div>
+                        </div>
+                        <img src="@/assets/static/icons/new/headphones.png">
+                    </div>
                 </div>
             </ol>
             <ol>
-                <div :class="{ 'toggled': settingsOpened }" class="standalone-icon" @click="toggleSettings()"><img src="@/assets/static/icons/gear.png"></div>
+                <div :class="{ 'toggled': settingsOpened }" class="standalone-icon" @click="toggleSettings()">
+                    <img src="@/assets/static/icons/new/gear.png">
+                </div>
             </ol>
         </ul>
     </div>
@@ -39,6 +51,9 @@
             ipcRenderer.on('game-data', (_: Electron.IpcRendererEvent, data: AmongUsGameData | null) => {
                 this.gameRunning = !!data;
             });
+            ipcRenderer.on('game-open-state', (_: Electron.IpcRendererEvent, opened: boolean) => {
+                this.gameRunning = opened;
+			});
         },
         methods: {
             toggleMute: function() {

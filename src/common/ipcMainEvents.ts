@@ -19,7 +19,7 @@ ipcMain.on('check-game-opened', (e: IpcMainEvent) => {
     try {
         const opened: boolean = getProcesses().find((p: typeof ProcessObject) => p.szExeFile === 'Among Us.exe') != undefined || false;
         if (!opened) {
-            e.reply('game-opened', false);
+            e.reply('game-open-state', false);
             e.reply('notify', 'Among Us does not seem to be opened.', NotificationType.WARNING);
         } else runGameProxy(e);
     } 
@@ -62,7 +62,7 @@ ipcMain.on('open-game', (e: IpcMainEvent) => {
 
 
 let runProxy: boolean = true;
-export const closeProxy = () => runProxy = true;
+export const closeProxy = () => runProxy = false;
 
 
 async function runGameProxy(e: IpcMainEvent) {
@@ -101,7 +101,8 @@ async function runGameProxy(e: IpcMainEvent) {
             }
         };
 
-        if (GameProxy && runProxy) tick(); 
+        if (GameProxy && runProxy) tick();
+        else e.reply('game-open-state', false);
     }
     catch (error) {
         e.reply('notify', error.message);
@@ -115,19 +116,33 @@ async function loadNewOffsets(version: string): Promise<IOffsets> {
     return offsets as IOffsets;
 }
 
-
-ipcMain.handle('get-setting', (_, keys: string[]): object => {
+function getSetting(keys: string[]): { keys: string[] } {
     let settings = { keys };
     for (const i in keys) {
         const k = keys[i];
-        if (store.has(k))  settings[k] = store.get(k) as any
+        if (store.has(k)) settings[k] = store.get(k) as any
     }
     return settings;
-});
+}
+
+ipcMain.handle('get-setting', (_, keys: string[]): object => getSetting(keys));
 
 ipcMain.on('set-setting', (e: IpcMainEvent, params: string[]) => {
-    for (const i in params) store.set(params[i][0], params[i][1]);
-    // e.reply('notify', 'Changes have been saved.', NotificationType.SUCCESS)
+    let hasChangedSetting = false;
+    for (const i in params) {
+        const key = params[i][0];
+        const value = params[i][1];
+
+        const r = getSetting([key]);
+        const oldValue = r[key];
+                
+        if (oldValue != value) {
+            hasChangedSetting = true;
+            store.set(key, value);
+        }
+    } 
+    if (hasChangedSetting)
+        e.reply('notify', 'Changes have been saved.', NotificationType.SUCCESS)
 });
 
 ipcMain.handle('get-user-settings', (_): object => {

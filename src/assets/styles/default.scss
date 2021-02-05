@@ -34,7 +34,6 @@ select {
 }
 
 input {
-    position: relative;
     user-select: none;
     left: 0;
     width: calc(100% - 10px);
@@ -43,7 +42,6 @@ input {
     background: $darker;
     border-radius: 3px;
     border: transparent solid 1px;
-    margin: 10px 0;
 }
 
 input:focus {
@@ -111,11 +109,13 @@ label {
     width: 100%;
     font-family: 'Verdana' 10px;
     color: $dim;
+    display: inline-block;
+    margin-top: 10px;
 }
 
 h4 {
     font-size: 13px;
     font-family: 'Uni Sans', cursive;
     color: $dim;
-    margin: 15px 0;
+    margin: 35px 0 10px;
 }

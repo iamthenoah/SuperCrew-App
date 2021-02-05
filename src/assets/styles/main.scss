@@ -1,19 +1,19 @@
 #app {
-    position: relative;
-    height: 100%;
+	position: relative;
+	height: 100%;
 }
 
 .content {
-    margin: 15px 0;
+	margin: 15px 0;
 }
 
 .noscroll {
-    overflow: hidden;
-    height: 100%;
+	overflow: hidden;
+	height: 100%;
 }
 
 .noselect {
-    user-select: none;
+	user-select: none;
 }
 
 .btn-inverted,
@@ -21,45 +21,45 @@
 .btn-special,
 .btn-danger-inverted,
 .btn {
-    user-select: none;
-    width: auto;
-    height: 33px;
-    padding: 5px 20px;
-    border-radius: 2px;
-    background: none;
-    text-align: center;
-    line-height: 21px;
-    font-weight: 700;
-    font-size: 12px;
-    text-transform: uppercase;
-    font-family: 'Uni Sans', cursive;
-    font-weight: bolder;
-    transition: all ease-in 75ms;
+	user-select: none;
+	width: auto;
+	height: 33px;
+	padding: 5px 20px;
+	border-radius: 2px;
+	background: none;
+	text-align: center;
+	line-height: 21px;
+	font-weight: 700;
+	font-size: 12px;
+	text-transform: uppercase;
+	font-family: 'Uni Sans', cursive;
+	font-weight: bolder;
+	transition: all ease-in 75ms;
 }
 
 .btn-inverted {
-    color: white;
-    border: white 1px solid;
+	color: white;
+	border: white 1px solid;
 }
 
 .btn-danger {
-    border: $red 2px solid;
-    background: $red;
+	border: $red 2px solid;
+	background: $red;
 }
 
 .btn-danger-inverted {
-    color: $red;
-    border: $red 1px solid;
+	color: $red;
+	border: $red 1px solid;
 }
 
 .btn {
-    border: $theme 2px solid;
-    background: $theme;
+	border: $theme 2px solid;
+	background: $theme;
 }
 
 .btn-special {
-    border: $green 2px solid;
-    background: $green;
+	border: $green 2px solid;
+	background: $green;
 }
 
 .btn:hover,
@@ -68,166 +68,199 @@
 .btn-danger-inverted:hover,
 .btn-inverted:hover,
 .simple-link:hover {
-    opacity: 0.75;
+	opacity: 0.75;
 }
 
 .right {
-    position: absolute;
-    right: 0;
+	position: absolute;
+	right: 0;
 }
-    
+
 .left {
-    position: absolute;
-    left: 0;
+	position: absolute;
+	left: 0;
 }
 
 .bottom {
-    position: absolute;
-    bottom: 0;
+	position: absolute;
+	bottom: 0;
 }
 
 .large {
-    margin-bottom: 15px;
-    width: 100%;
-    display: block;
-    text-align: center;
+	margin-bottom: 15px;
+	width: 100%;
+	display: block;
+	text-align: center;
+}
+
+.large-input {
+	margin: 10px 0;
+	display: block;
+	width: 100%
 }
 
 .space-bottom {
-    margin-bottom: 40px;
+	margin-bottom: 40px;
 }
 
 .space-top {
-    margin-top: 40px;
+	margin-top: 40px;
 }
 
 .small-space {
-    margin: 15px 0 !important;
+	margin: 15px 0 !important;
 }
 
 .center-h {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .center-v {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .error {
-    color: $red;
-    font-weight: bolder;
-    user-select: none;
+	color: $red;
+	font-weight: bolder;
+	user-select: none;
 }
 
 .success {
-    color: $green;
-    font-weight: bolder;
-    user-select: none;
+	color: $green;
+	font-weight: bolder;
+	user-select: none;
 }
 
 .simple-link {
-    margin: 10px 0;
-    font-size: 14px;
+	margin: 10px 0;
+	font-size: 14px;
 }
 
 .disabled {
-    opacity: 0.5;
-    user-select: none;
-    pointer-events: none;
+	opacity: 0.5;
+	user-select: none;
+	pointer-events: none;
 }
 
 .checkbox {
-    position: relative;
-    width: auto;
-    height: 30px;
-    transform: translateY(30%);
-    margin-right: 15px;
+	position: relative;
+	width: auto;
+	height: 30px;
+	transform: translateY(30%);
+	margin-right: 15px;
 }
 
 .vignet-box {
-    background: $light;
-    width: 100%;
-    height: auto;
-    border-radius: 7.5px;
-    padding: 20px;
-    margin: 40px 0;
-    padding-bottom: 25px;
+	background: $light;
+	width: 100%;
+	height: auto;
+	border-radius: 7.5px;
+	padding: 20px;
+	margin: 40px 0;
+	padding-bottom: 25px;
 }
 
 .link {
-    color: $link;
+	color: $link;
 }
 
 .item-select {
-    border: solid transparent 1.5px;
-    transition: all 100ms ease-out;
+	border: solid transparent 1.5px;
+	transition: all 100ms ease-out;
 }
 
 .item-select:hover {
-    border: solid white 1.5px;
+	border: solid white 1.5px;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+	width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: $lighter;
+	background: $lighter;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: $darker;
+	background: $darker;
 }
 
 .standalone-icon > img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.75;
-    height: 16.5px;
-    width: auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -45%);
+	height: 20px;
+	width: auto;
 }
 
 .standalone-icon {
-    cursor: pointer;
-    position: relative;
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
-    transition: all ease 100ms;
+	cursor: pointer;
+	position: relative;
+	width: 30px;
+	height: 30px;
+	border-radius: 3px;
+	transition: all ease 100ms;
 }
 
 .standalone-icon:hover {
-    background: rgba($light, 0.5);
+	.crossed-bg {
+		background: $dark;
+	}
+	background: $dark;
+}
+
+.crossed-bg,
+.crossed-red {
+	// clip-path: polygon(0 15%, 15% 0, 100% 85%, 85% 100%);
+	z-index: 100;
+	position: absolute;
+	transform: translate(-50%, -50%) rotate(-45deg);
+	left: 50%;
+	top: 50%;
+	height: 25px;
+}
+
+.crossed-bg {
+	transition: all ease 100ms;
+	width: 6.5px;
+	background: $darker;
+}
+
+.crossed-red {
+	width: 2px;
+	background: $red;
+}
+
+.tooltip-container {
+	position: relative;
 }
 
 .tooltip {
-    user-select: none;
-    z-index: 10000;
-    position: absolute;
-    transform: translateX(-50%);
-    top: calc(-100% - 10px);
-    left: 50%;
-    width: fit-content;
-    height: auto;
-    padding: 10px 15px;
-    background: $darkest;
-    color: white;
-    border-radius: 3px;
+	user-select: none;
+	z-index: 10000;
+	position: absolute;
+	transform: translateX(-50%);
+	bottom: calc(100% + 5px);
+	left: 50%;
+	width: fit-content;
+	height: auto;
+	padding: 10px 15px;
+	background: $darkest;
+	color: white;
+	border-radius: 3px;
 }
 
 .tooltip-arrow {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -5px;
-    width: 10px;
-    height: 5px;
-    background: $darkest;
-    clip-path: polygon(100% 0, 0 0, 50% 100%);
+	position: absolute;
+	left: 50%;
+	bottom: -3.75px;
+	transform: translateX(-50%) rotate(45deg);
+	width: 7.5px;
+	height: 7.5px;
+	background: $darkest;
 }

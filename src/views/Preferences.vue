@@ -1,18 +1,21 @@
 <template>
 	<section>
 		<h4>Player & Gameplay</h4>
-		<label>Reference Name</label>
-		<form @submit.prevent="changeSetting('displayName', this.settings.displayName)">
-			<input type="text" spellcheck="false" v-model="settings.displayName">
-			<button type="submit" class="btn-special large">Update Name</button>
-		</form>
-		<label>Hide Code in Lobby</label>
-		<input type="text" spellcheck="false" v-model="settings.configs.hideCode">
+		<label>‣ Reference Name</label>
+			<form @submit.prevent="changeSetting('displayName', this.settings.displayName)">
+				<div class="tooltip-container large-input" v-tooltip="'displayed name while playing'">
+					<input type="text" spellcheck="false" v-model="settings.displayName">
+				</div>
+				<button type="submit" class="btn-special large">Update Name</button>
+			</form>
+		<label>‣ Hide Code in Lobby</label>
+		<div class="large-input">
+			<input type="text" spellcheck="false" v-model="settings.configs.hideCode">
+		</div>
 	</section>
 	<section>
-		<hr>
 		<h4>Voice & Audio</h4>
-		<label>Microphone</label>
+		<label>‣ Microphone</label>
 		<Dropdown
 			:selectedOption="settings.perifs.input?.name"
 			:noneSelectedText="'No input device'"
@@ -22,7 +25,7 @@
 			:options="inputDevices"
 			@onSelectionChanged="changePerif('input', $event)"
 		/>
-		<label>Audio Output</label>
+		<label>‣ Audio Output</label>
 		<Dropdown
 			:selectedOption="settings.perifs.output?.name"
 			:noneSelectedText="'No output device'"
@@ -32,42 +35,43 @@
 			:options="outputDevices"
 			@onSelectionChanged="changePerif('output', $event)"
 		/>
-		<label>Push to Talk Shortcut</label>
-		<SingleCharInput
-			v-tooltip="'push to talk keyboard shortcut'"
-			:validation="validateShortcutInput"
-			:uniqueInputIdentifier="'pushToTalkKey'"
-			:inputChar="settings.shortcuts.pushToTalkKey?.keyText"
-			@onCharChanged="changeSetting('pushToTalkKey', $event)"
-		/>
-		<label>Deafen Shortcut</label>
-		<SingleCharInput 
-			v-tooltip="'deafen keyboard shortcut'"
-			:validation="validateShortcutInput"
-			:uniqueInputIdentifier="'deafenKey'"
-			:inputChar="settings.shortcuts.deafenKey?.keyText"
-			@onCharChanged="changeSetting('deafenKey', $event)"
-		/>
-	</section>
-	<section>
-		<hr>
-		<h4>Appearance</h4>
-		<label>App Theme</label>
-		<div v-tooltip="'change the apps color theme'">
-		<input type="text" spellcheck="false" v-model="settings.configs.theme">
+		<label>‣ Push to Talk Shortcut</label>
+		<div class="tooltip-container" v-tooltip="'push to talk keyboard shortcut'">
+			<SingleCharInput
+				:validation="validateShortcutInput"
+				:uniqueInputIdentifier="'pushToTalkKey'"
+				:inputChar="settings.shortcuts.pushToTalkKey?.keyText"
+				@onCharChanged="changeSetting('pushToTalkKey', $event)"
+			/>
+		</div>
+		<label>‣ Deafen Shortcut</label>
+		<div class="tooltip-container" v-tooltip="'deafen keyboard shortcut'">
+			<SingleCharInput 
+				:validation="validateShortcutInput"
+				:uniqueInputIdentifier="'deafenKey'"
+				:inputChar="settings.shortcuts.deafenKey?.keyText"
+				@onCharChanged="changeSetting('deafenKey', $event)"
+			/>
 		</div>
 	</section>
 	<section>
-		<hr>
+		<h4>Appearance</h4>
+		<label>‣ App Theme</label>
+		<div class="tooltip-container large-input" v-tooltip="'change the apps color theme'">
+			<input type="text" spellcheck="false" v-model="settings.configs.theme">
+		</div>
+	</section>
+	<section>
 		<h4>Server (Advanced)</h4>
-		<label>Server Source</label>
-		<input type="text" spellcheck="false" v-model="settings.server">
+		<label>‣ Server Source</label>
+		<div class="tooltip-container large-input" v-tooltip="'specify voice chanel server origin'">
+			<input type="text" spellcheck="false" v-model="settings.server">
+		</div>
 		<button class="btn-special large">Update Source</button>
 	</section>
 	<section>
-		<hr>
 		<h4>Danger Zone</h4>
-		<button class="btn-danger large">Reset Settings</button>
+		<button class="btn-inverted large">Reset Settings</button>
 		<p>Resets app settings to its initial state.</p>
 		<p>display name, server source, audio sources, etc.</p>
 	</section>
@@ -178,7 +182,7 @@
 
 				const from = key.indexOf('pushToTalkKey') > -1 ? 'deafenKey' : 'pushToTalkKey';
 				const res = await this.getSetting([from]);
-				const valid = !(res[from].keyCode === code);
+				const valid = res[from].keyCode !== code;
 
 				if (!valid) this.$emit('notify', `${toWords(key)} cannot be the same as ${toWords(from)}.`);
 				return valid;
