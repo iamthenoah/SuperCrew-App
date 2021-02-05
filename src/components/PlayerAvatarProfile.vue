@@ -2,7 +2,7 @@
     <div class="noselect">
         <div class="avatar-container noselect">
             <img class="body" :src="Body">
-            <img class="hat" v-if="hasHat && !avatar.ghost" :style="{ 'z-index': zIndex }" :src="Hat">
+            <img class="hat" v-if="hasHat && !avatar.ghost" :style="{ 'z-index': zIndex, 'opacity': HatOpacity }" :src="Hat">
             <img class="skin" v-if="hasSkin && !avatar.ghost" :src="Skin">
         </div>
     </div>
@@ -27,7 +27,7 @@
                 return require(`@/assets/static/game/players/${state}/${colorId}.png`);
             },
             Hat: function(): NodeRequire {
-                if (this.hasHat && !this.avatar.isGhost) {
+                if (this.hasHat) {
                     const hatId: number = this.avatar.hatId;
                     if (hatId === 77 || hatId === 90) {
                         const colorId: number = this.avatar.colorId;
@@ -44,6 +44,9 @@
                 }
                 return null as unknown as NodeRequire;
             },
+            HatOpacity: function(): number {
+                return this.avatar.isGhost ? 0.5 : 1; 
+            }
         }
     });
 
