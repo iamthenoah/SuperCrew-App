@@ -1,4 +1,4 @@
-# Corsair Monitor
+# SuperCrew
 
 SuperCrew is a small desktop application for the very popular video game [AmongUs](https://www.google.com/search?gs_ssp=eJzj4tVP1zc0TMutKMlOy64yYPTiSMzNz0tXKC0GAGmqCFE&q=among+us&oq=amongus&aqs=chrome.1.69i57j46i10j0i10j46i10j0i10l5.3360j0j1&sourceid=chrome&ie=UTF-8)
 
